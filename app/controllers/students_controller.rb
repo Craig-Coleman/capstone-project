@@ -1,5 +1,8 @@
 class StudentsController < ApplicationController
 
+    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+    rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
+
     def index 
         students = Student.all 
         render json: students, status: :ok 
@@ -32,5 +35,13 @@ class StudentsController < ApplicationController
     def student_params
         params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birthdate)
     end
-    
+
+    def render_unprocessable_entity_response(invalid)
+        render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
+    end
+
+    def render_not_found_response
+        render json: { error: 'Assignment not found' }, status: :not_found 
+    end
+
 end
