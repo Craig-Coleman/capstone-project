@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  start_time: 2022-12-01 14:07:10
+  end_time: 2022-12-01 14:07:10
+  course_id: 1
+  student_id: 1
+
+two:
+  number: 1
+  start_time: 2022-12-01 14:07:10
+  end_time: 2022-12-01 14:07:10
+  course_id: 1
+  student_id: 1
