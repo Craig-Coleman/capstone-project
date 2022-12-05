@@ -6,5 +6,5 @@ class ApplicationController < ActionController::Base
     def authorize
       render json: { errors: ["Not authorized"] }, status: :unauthorized unless User.find_by(id: session[:user_id])
     end
-    
+
 end
