@@ -1,9 +1,9 @@
 import React from 'react';
 
-function UserPage() {
+function UserInfo() {
     return(
         <h1>UserPage</h1>
     );
 };
 
-export default UserPage;
+export default UserInfo;
