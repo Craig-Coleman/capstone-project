@@ -39,19 +39,19 @@ function App() {
       <Route path="/coursehome">
         <CourseHome />
       </Route>
-      <Route path="classroster">
+      <Route path="/classroster">
         <Roster />
       </Route>
       <Route path="/studentlist">
         <StudentList />
       </Route>
-      <Route path="studentinfo">
+      <Route path="/studentinfo">
         <StudentInfo />
       </Route>
-      <Route path="classgradebook">
+      <Route path="/classgradebook">
         <Gradebook />
       </Route>
-      <Route path="userinfo">
+      <Route path="/userinfo">
         <UserInfo />
       </Route>
     </div>
