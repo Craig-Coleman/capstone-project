@@ -5,9 +5,9 @@ import Header from './Header';
 import Auth from './Auth';
 import CourseList from './CourseList';
 import CourseHome from './CourseHome';
-import Roster from './Roster';
+import CourseRoster from './CourseRoster';
 import StudentInfo from './StudentInfo';
-import Gradebook from './Gradebook';
+import CourseGradebook from './CourseGradebook';
 import UserInfo from './UserInfo';
 import StudentList from './StudentList';
 
@@ -39,8 +39,8 @@ function App() {
       <Route path="/coursehome">
         <CourseHome />
       </Route>
-      <Route path="/classroster">
-        <Roster />
+      <Route path="/courseroster">
+        <CourseRoster />
       </Route>
       <Route path="/studentlist">
         <StudentList />
@@ -48,8 +48,8 @@ function App() {
       <Route path="/studentinfo">
         <StudentInfo />
       </Route>
-      <Route path="/classgradebook">
-        <Gradebook />
+      <Route path="/coursegradebook">
+        <CourseGradebook />
       </Route>
       <Route path="/userinfo">
         <UserInfo />

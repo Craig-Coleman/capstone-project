@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Gradebook() {
+function CourseGradebook() {
     return(
         <h1>Gradebook</h1>
     );
 };
 
-export default Gradebook;
+export default CourseGradebook;

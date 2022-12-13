@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Roster() {
+function CourseRoster() {
     return(
         <h1>Roster</h1>
     );
 };
 
-export default Roster;
+export default CourseRoster;
