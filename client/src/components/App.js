@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div>
-      <Header />
+      <Header setUser={setUser} />
       <Route exact path="/">
         <CourseList />
       </Route>
