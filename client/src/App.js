@@ -1,15 +1,15 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
-import Header from './Header';
-import Auth from './Auth';
-import CourseList from './CourseList';
-import CourseHome from './CourseHome';
-import CourseRoster from './CourseRoster';
-import StudentInfo from './StudentInfo';
-import CourseGradebook from './CourseGradebook';
-import UserInfo from './UserInfo';
-import StudentList from './StudentList';
+import Header from './components/Header';
+import Auth from './components/Auth';
+import CourseList from './features/courses/CourseList';
+import CourseHome from './features/courses/CourseHome';
+import CourseRoster from './features/courses/CourseRoster';
+import StudentInfo from './features/students/StudentInfo';
+import CourseGradebook from './features/courses/CourseGradebook';
+import UserInfo from './components/UserInfo';
+import StudentList from './features/students/StudentList';
 
 function App() {
 
