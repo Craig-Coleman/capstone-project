@@ -1,8 +1,18 @@
 import React from 'react';
 
-function CourseCard() {
+function CourseCard(courses={courses}) {
+
+    const courseList = courses.courses.map((course) => {
+        return (
+            <li key={course.id}>{course.title}</li>
+        )
+    })
+
     return (
-        <h1>CourseCard</h1>
+            <div>
+            <h1>CourseCard</h1>
+            {courseList}
+        </div>
     );
 };
 

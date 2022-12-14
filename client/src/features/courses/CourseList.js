@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
+import CourseCard from './CourseCard';
 import { useSelector, useDispatch } from 'react-redux'
-import {selectAllCourses, fetchCourses } from './coursesSlice';
+import { fetchCourses } from './coursesSlice';
 
 function CourseList() {
+    const courses = useSelector((state) => state.courses.entities);
 
     const dispatch = useDispatch();
-    // const courses = useSelector(selectAllCourses)
 
-    // const courseStatus = useSelector(state => state.courses.staus)
-
-    // useEffect(() => {
-    //     if (courseStatus === 'idle') {
-    //         dispatch(fetchCourses())
-    //     }
-    // }, [courseStatus, dispatch])
+    useEffect(() => {
+        dispatch(fetchCourses());
+    }, [dispatch]);
 
     return(
-        <h1>Course List</h1>
+        <div>
+            <h1>CourseList</h1>
+            <CourseCard courses={courses} />
+        </div>
     );
 };
 

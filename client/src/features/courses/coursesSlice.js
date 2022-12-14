@@ -1,37 +1,44 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const initialState = {
-    courses: [],
-    status: 'idle',
-    error: null
-};
+export const fetchCourses = createAsyncThunk("courses/fetchCourses", () => {
+    return fetch("/courses")
+        .then((response) => response.json())
+        .then((data) => data)
+})
 
 const coursesSlice = createSlice({
     name: 'courses',
-    initialState,
+    initialState: {
+        entities: [],
+        status: 'idle',
+        error: null
+    },
     reducers: {
-        courseAdded: {
-            reducer(state, action) {
-                state.courses.push(action.payload)
-            }
+        courseAdded(state, action) {
+            state.entities.push(action.payload)
         },
-        courseDeleted: {
-            reducer(state, action) {
-                const courseId = action.payload
-                state.courses.filter((course) => course.id !== courseId)
-            }
+        courseUpdated(state, action) {
+            const course = state.entities.find((course) => course.id === action.payload.id);
+            course.title = action.payload.title;
+            course.period = action.payload.period; 
+            course.grade_level = action.payload.grade_level; 
+        },
+        courseDeleted(state, action) {
+            const course = state.entities.find((course) => course.id === action.payload.id);
+            state.courses.filter((course) => course.id !== action.payload.id);
         }
-    }
+    },
+    extraReducers: {
+        [fetchCourses.pending](state) {
+            state.status = "loading";
+        },
+        [fetchCourses.fulfilled](state, action) {
+            state.entities = action.payload;
+            state.status = "idle"
+        },
+    },
 });
 
-export const fetchCourses = createAsyncThunk('courses/fetchCourses', 
-    fetch('/courses'))
-
-export const { courseAdded, courseDeleted } = coursesSlice.actions;
+export const {courseAdded, courseUpdated, courseDeleted} = coursesSlice.actions;
 
 export default coursesSlice.reducer;
-
-export const selectAllCourses = state => state.courses.courses;
-
-export const selectCourseById = (state, courseId) =>
-    state.courses.courses.find(course => course.id === courseId);
