@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import Header from './components/Header';
 import Auth from './components/Auth';
+import HomePage from './components/HomePage';
 import CourseList from './features/courses/CourseList';
 import CourseHome from './features/courses/CourseHome';
 import CourseRoster from './features/courses/CourseRoster';
@@ -34,6 +35,9 @@ function App() {
     <div>
       <Header setUser={setUser} />
       <Route exact path="/">
+        <HomePage user={user}/>
+      </Route>
+      <Route path="/courselist">
         <CourseList />
       </Route>
       <Route path="/coursehome">

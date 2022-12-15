@@ -18,9 +18,14 @@ function Auth({ setUser }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(userInfo),
-          })
-          .then(res => res.json())
-          .then(user => setUser(user))
+        })
+          .then(res => {
+            if (res.ok) {
+                res.json().then((user) => setUser(user));
+            } else {
+                res.json().then((err) => setError(err.error));
+            };
+          });
     };
 
     return(

@@ -3,14 +3,16 @@ class CoursesController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
-    def index 
-        courses = Course.all 
+    def index
+        user = User.find(session[:user_id]) 
+        courses = user.courses 
         render json: courses, status: :ok
     end
 
-    def create 
-        course = Course.create!(course_params)
-        render json: course, status: :created 
+    def create
+        user = User.find(session[:user_id]) 
+        new_course = user.courses.create!(course_params)
+        render json: new_course, status: :created 
     end
 
     def show 
