@@ -12,9 +12,9 @@ function Header({ setUser }) {
         }).then((res) => {
             if (res.ok) {
             setUser(null);
-            history.push("/");
             };
-        });  
+        }); 
+        history.push("/"); 
     };
 
     return(

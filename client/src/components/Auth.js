@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { login } from './authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 
 function Auth({ setUser }) {
-
-    const dispatch = useDispatch();
-    console.log(useSelector(state => state.auth))
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState([]);
 
-    const userInfo = {
-        username,
-        password
-    };
-
     function handleLogin(event) {
         event.preventDefault();
-        dispatch(login(userInfo))
+        const userInfo = {
+            username,
+            password
+        };
+        fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userInfo),
+          })
+          .then(res => res.json())
+          .then(user => setUser(user))
     };
 
     return(
