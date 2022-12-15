@@ -4,12 +4,13 @@ export const fetchCourses = createAsyncThunk("courses/fetchCourses", () => {
     return fetch("/courses")
         .then((response) => response.json())
         .then((data) => data)
-})
+});
 
 const coursesSlice = createSlice({
     name: 'courses',
     initialState: {
-        entities: [],
+        courses: [],
+        assignments: [],
         status: 'idle',
         error: null
     },
@@ -33,7 +34,8 @@ const coursesSlice = createSlice({
             state.status = "loading";
         },
         [fetchCourses.fulfilled](state, action) {
-            state.entities = action.payload;
+            state.courses = action.payload;
+            state.assignments = action.payload.map((course) => course.assignments)[0]
             state.status = "idle"
         },
     },

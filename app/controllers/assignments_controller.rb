@@ -4,6 +4,7 @@ class AssignmentsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
     def index
+        byebug
         assignments = Assignment.all 
         render json: assignments, status: :ok  
     end
