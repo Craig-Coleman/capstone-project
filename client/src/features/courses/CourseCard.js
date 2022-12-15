@@ -1,12 +1,8 @@
 import React from 'react';
 
-function CourseCard(courses={courses}) {
+function CourseCard( courses={courses} ) {
 
-    const courseList = courses.courses.map((course) => {
-        return (
-            <li key={course.id}>{course.title}</li>
-        )
-    })
+    const courseList = (courses) ? "Courses Loading" : courses.map((course) => { return ( <li key={course.id}>{course.title}</li>)})
 
     return (
             <div>
