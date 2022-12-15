@@ -1,6 +1,5 @@
 class Assignment < ApplicationRecord
-    belongs_to :course 
-    belongs_to :student 
+    belongs_to :assignmentList, polymorphic: true
 
     validates :title, presence: true
     validates :assign_date, presence: true 

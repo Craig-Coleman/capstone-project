@@ -1,6 +1,6 @@
 class Student < ApplicationRecord
     has_many :periods 
-    has_many :assignments, dependent: :destroy  
+    has_many :assignments, as: :assignmentList, dependent: :destroy  
     has_many :courses, through: :periods 
 
     validates :first_name, presence: true 
