@@ -30,6 +30,12 @@ class StudentsController < ApplicationController
         head :no_content 
     end
 
+    def assignments_index 
+        student = Student.find(params[:student_id])
+        assignments = student.assignments 
+        render json: assignments, include: :student 
+    end
+
     private
     
     def student_params
