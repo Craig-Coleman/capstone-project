@@ -6,18 +6,12 @@ export const fetchCourses = createAsyncThunk("courses/fetchCourses", () => {
         .then((courses) => courses)
 });
 
-export const fetchRoster = createAsyncThunk("courses/fetchRoster", (courseId) => {
-    return fetch(`/courses/${courseId}/students`)
-        .then((response) => response.json())
-        .then((roster) => roster)
-})
-
 const coursesSlice = createSlice({
     name: 'courses',
     initialState: {
         courses: [],
         assignments: [],
-        roster: [],
+        students: [],
         status: 'idle',
         error: null
     },
@@ -43,15 +37,9 @@ const coursesSlice = createSlice({
         [fetchCourses.fulfilled](state, action) {
             state.courses = action.payload;
             state.assignments = action.payload.map((course) => course.assignments)[0]
+            state.students = action.payload.map((course) => course.students)
             state.status = "idle"
         },
-        [fetchRoster.pending](state) {
-            state.status = "loading";
-        },
-        [fetchRoster.fulfilled](state, action) {
-            state.roster = action.payload;
-            state.status = "idle"
-        }
     },
 });
 

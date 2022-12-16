@@ -16,7 +16,6 @@ function HomePage({ user }) {
     return (
         <div>
             <h1>HomePage</h1>
-            <CourseList />
         </div>
     );
 };

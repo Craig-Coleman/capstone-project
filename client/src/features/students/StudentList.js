@@ -1,8 +1,18 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 function StudentList() {
+
+    const students = useSelector((state) => state.students.students)
+
+    const studentList = students.map((student) => {
+        return(
+            <li key={student.id}>{student.last_name}, {student.first_name}</li>
+        )
+    })
+
     return(
-        <h1>StudentList</h1>
+        <h1>{studentList}</h1>
     );
 };
 

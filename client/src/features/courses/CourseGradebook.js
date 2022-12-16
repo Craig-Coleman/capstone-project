@@ -1,7 +1,14 @@
 import React from 'react';
 import CourseNavBar from './CourseNavBar';
+import { useSelector } from 'react-redux';
 
 function CourseGradebook() {
+
+    const studentAssignments = useSelector((state) => state.students.assignments);
+    const courseAssignments = useSelector((state) => state.courses.assignments);
+
+    console.log(studentAssignments)
+
     return(
         <div>
             <CourseNavBar />
