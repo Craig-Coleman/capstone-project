@@ -19,7 +19,7 @@ function Header({ setUser }) {
 
     return(
         <div>
-            <h1>Welcome</h1>
+            <h1>Header</h1>
             <NavBar />
             <button onClick={handleLogout}>Logout</button>
         </div>

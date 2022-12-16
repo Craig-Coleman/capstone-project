@@ -1,8 +1,12 @@
 import React from 'react';
+import CourseNavBar from './CourseNavBar';
 
 function CourseGradebook() {
     return(
-        <h1>Gradebook</h1>
+        <div>
+            <CourseNavBar />
+            <h1>CourseGradeBook</h1>
+        </div>
     );
 };
 

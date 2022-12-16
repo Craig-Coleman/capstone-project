@@ -1,8 +1,12 @@
 import React from 'react';
+import CourseNavBar from './CourseNavBar';
 
 function CourseRoster() {
     return(
-        <h1>Roster</h1>
+        <div>
+            <CourseNavBar />
+            <h1>CourseRoster</h1>
+        </div>
     );
 };
 
