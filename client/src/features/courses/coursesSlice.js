@@ -3,14 +3,21 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchCourses = createAsyncThunk("courses/fetchCourses", () => {
     return fetch("/courses")
         .then((response) => response.json())
-        .then((data) => data)
+        .then((courses) => courses)
 });
+
+export const fetchRoster = createAsyncThunk("courses/fetchRoster", (courseId) => {
+    return fetch(`/courses/${courseId}/students`)
+        .then((response) => response.json())
+        .then((roster) => roster)
+})
 
 const coursesSlice = createSlice({
     name: 'courses',
     initialState: {
         courses: [],
         assignments: [],
+        roster: [],
         status: 'idle',
         error: null
     },
@@ -38,6 +45,13 @@ const coursesSlice = createSlice({
             state.assignments = action.payload.map((course) => course.assignments)[0]
             state.status = "idle"
         },
+        [fetchRoster.pending](state) {
+            state.status = "loading";
+        },
+        [fetchRoster.fulfilled](state, action) {
+            state.roster = action.payload;
+            state.status = "idle"
+        }
     },
 });
 
