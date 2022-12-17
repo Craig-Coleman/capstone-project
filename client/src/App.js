@@ -9,7 +9,7 @@ import CourseHome from './features/courses/CourseHome';
 import CourseRoster from './features/courses/CourseRoster';
 import StudentInfo from './features/students/StudentInfo';
 import CourseGradebook from './features/courses/CourseGradebook';
-import UserInfo from './components/UserInfo';
+import UserInfo from './features/users/UserInfo';
 import StudentList from './features/students/StudentList';
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
     <div>
       <Header setUser={setUser} />
       <Route exact path="/">
-        <HomePage user={user}/>
+        <HomePage />
       </Route>
       <Route path="/courselist">
         <CourseList />

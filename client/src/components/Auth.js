@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { userAdded } from '../features/users/usersSlice';
 
 function Auth({ setUser }) {
+
+    const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -21,7 +25,10 @@ function Auth({ setUser }) {
         })
           .then(res => {
             if (res.ok) {
-                res.json().then((user) => setUser(user));
+                res.json().then((user) => {
+                    setUser(user);
+                    dispatch(userAdded(user));
+                });
             } else {
                 res.json().then((err) => setError(err.error));
             };
