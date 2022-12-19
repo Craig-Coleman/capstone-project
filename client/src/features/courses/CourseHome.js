@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import CourseNavBar from './CourseNavBar';
 
 function CourseHome() {
-
-    const dispatch = useDispatch();
 
     return(
         <div>

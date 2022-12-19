@@ -26,7 +26,6 @@ const coursesSlice = createSlice({
             course.grade_level = action.payload.grade_level; 
         },
         courseDeleted(state, action) {
-            const course = state.entities.find((course) => course.id === action.payload.id);
             state.courses.filter((course) => course.id !== action.payload.id);
         }
     },

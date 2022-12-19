@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CourseCard from './CourseCard';
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchCourses, fetchRoster } from './coursesSlice';
-import { fetchStudents, fetchStudentAssignments } from '../students/studentsSlice';
+import { useSelector } from 'react-redux'
 
 function CourseList() {
 

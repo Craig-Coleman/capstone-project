@@ -8,6 +8,7 @@ function CourseGradebook() {
     const courseAssignments = useSelector((state) => state.courses.assignments);
 
     console.log(studentAssignments)
+    console.log(courseAssignments)
 
     return(
         <div>

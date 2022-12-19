@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
+import { userAdded } from './features/users/usersSlice';
+import { useDispatch } from 'react-redux';
 import Header from './components/Header';
 import Auth from './components/Auth';
 import HomePage from './components/HomePage';
@@ -14,15 +16,20 @@ import StudentList from './features/students/StudentList';
 
 function App() {
 
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch("/me").then((res) => {
         if (res.ok) {
-          res.json().then((user) => setUser(user));
+          res.json().then((user) => 
+            {setUser(user);
+            dispatch(userAdded(user));
+          });
         };
-      });
-  }, []);
+    });
+  }, [dispatch]);
 
   if (!user) 
     return (

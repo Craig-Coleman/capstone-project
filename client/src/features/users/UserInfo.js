@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { editUserInfo } from './usersSlice';
 
 function UserInfo() {
+
+    const dispatch = useDispatch();
 
     const user = useSelector(state => state.users.entities)
 
@@ -32,6 +35,15 @@ function UserInfo() {
 
     function handleSubmit(event) {
         event.preventDefault();
+        const newUserInfo = {
+            id: user.id,
+            first_name: firstName,
+            last_name: lastName,
+            email: email
+        };
+        dispatch(editUserInfo(newUserInfo));
+        const saveButton = document.getElementById("save");
+        saveButton.hidden = true;
     }
 
     return(
@@ -62,7 +74,11 @@ function UserInfo() {
                         onChange={event => handleChangeEmail(event.target.value)}
                         value={email}
                         ></input>
-                <input id="save" type="submit" value="Save Changes" hidden={true}></input>
+                <input 
+                    id="save" 
+                    type="submit" 
+                    value="Save Changes" 
+                    hidden={true}></input>
             </form>
             <button onClick={handleEditForm}>edit</button>
         </div>

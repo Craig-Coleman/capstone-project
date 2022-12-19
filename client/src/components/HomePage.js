@@ -1,16 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchCourses } from '../features/courses/coursesSlice';
-import { fetchStudents } from '../features/students/studentsSlice';
+import React from 'react';
+
 
 function HomePage() {
-
-    const dispatch = useDispatch();
-
-        useEffect(() => {
-            dispatch(fetchCourses());
-            dispatch(fetchStudents());
-        }, [dispatch])
 
     return (
         <div>
