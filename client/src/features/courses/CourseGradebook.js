@@ -4,11 +4,9 @@ import { useSelector } from 'react-redux';
 
 function CourseGradebook() {
 
-    const studentAssignments = useSelector((state) => state.students.assignments);
-    const courseAssignments = useSelector((state) => state.courses.assignments);
-
-    console.log(studentAssignments)
-    console.log(courseAssignments)
+    const courses = useSelector((state) => state.courses.courses)
+    const selectedCourseId = useSelector((state) => state.courses.selectedCourse);
+    const selectedCourse = courses.filter(course => course.id === selectedCourseId)[0];
 
     return(
         <div>
