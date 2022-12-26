@@ -68,6 +68,7 @@ function CourseList() {
                     <select 
                         onChange={event => handleChangeGradeLevel(event.target.value)} 
                         value={gradeLevel}>
+                            <option value={null}>Select Grade Level</option>
                             <option value={9}>9</option>
                             <option value={10}>10</option>
                             <option value={11}>11</option>
@@ -77,6 +78,7 @@ function CourseList() {
                     <select 
                         onChange={event => handleChangePeriod(event.target.value)} 
                         value={period}>
+                            <option value={null}>Select Period</option>
                             <option value={1}>1st</option>
                             <option value={2}>2nd</option>
                             <option value={3}>3rd</option>

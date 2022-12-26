@@ -63,7 +63,7 @@ function App() {
         <CourseGradebook />
       </Route>
       <Route path="/userinfo">
-        <UserInfo />
+        <UserInfo setUser={setUser} />
       </Route>
     </div>
   );

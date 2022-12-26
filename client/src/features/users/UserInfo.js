@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { editUserInfo } from './usersSlice';
 
-function UserInfo() {
+function UserInfo({ setUser }) {
 
     const dispatch = useDispatch();
 
-    const user = useSelector(state => state.users.entities)
+    const user = useSelector(state => state.users.entities);
+
+    const history = useHistory();
 
     const [firstName, setFirstName] = useState(user.first_name);
     const [lastName, setLastName] = useState(user.last_name);
@@ -44,6 +47,17 @@ function UserInfo() {
         dispatch(editUserInfo(newUserInfo));
         const saveButton = document.getElementById("save");
         saveButton.hidden = true;
+    };
+
+    function handleDeleteUser(id) {
+        fetch(`/users/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        setUser(null);
+        history.push("/");
     }
 
     return(
@@ -81,6 +95,7 @@ function UserInfo() {
                     hidden={true}></input>
             </form>
             <button onClick={handleEditForm}>edit</button>
+            <button onClick={function() {handleDeleteUser(user.id)}}>Delete My Account</button>
         </div>
     );
 };
