@@ -26,6 +26,18 @@ export const deleteCourse = createAsyncThunk("courses/deleteCourse", (courseId) 
     .then(course => course)
 });
 
+export const updateCourse = createAsyncThunk("courses/updateCourse", (courseData) => {
+    return fetch(`/courses/${courseData.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(courseData)
+    })
+    .then(res => res.json())
+    .then(course => course);
+});
+
 const coursesSlice = createSlice({
     name: 'courses',
     initialState: {
@@ -75,6 +87,14 @@ const coursesSlice = createSlice({
         },
         [deleteCourse.fulfilled](state, action) {
             state.courses = state.courses.filter(course => course.id !== action.payload.id);
+            state.status = "idle";
+        },
+        [updateCourse.pending](state) {
+            state.status = "loading"
+        },
+        [updateCourse.fulfilled](state, action) {
+            state.courses = state.courses.filter(course => course.id !== action.payload.id);
+            state.courses.push(action.payload)
             state.status = "idle";
         }
     },
