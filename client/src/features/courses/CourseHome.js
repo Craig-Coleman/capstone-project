@@ -8,12 +8,11 @@ function CourseHome() {
     const selectedCourseId = useSelector((state) => state.courses.selectedCourse);
     const selectedCourse = courses.filter(course => course.id === selectedCourseId)[0];
 
-    console.log(selectedCourse)
-
     return(
         <div>
             <CourseNavBar />
-            <h1>CourseHome</h1>
+            <h1>{selectedCourse.title}</h1>
+            <h2>Period: {selectedCourse.period}</h2>
         </div>
     );
 };

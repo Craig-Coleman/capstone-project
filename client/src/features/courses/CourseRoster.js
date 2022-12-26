@@ -17,7 +17,7 @@ function CourseRoster() {
     return(
         <div>
             <CourseNavBar />
-            <h1>CourseRoster</h1>
+            <h1>{selectedCourse.title} Roster</h1>
             {roster}
         </div>
     );

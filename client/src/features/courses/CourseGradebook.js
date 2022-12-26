@@ -11,7 +11,7 @@ function CourseGradebook() {
     return(
         <div>
             <CourseNavBar />
-            <h1>CourseGradeBook</h1>
+            <h1>{selectedCourse.title} Gradebook</h1>
         </div>
     );
 };
