@@ -29,7 +29,7 @@ class CoursesController < ApplicationController
     def destroy 
         course = Course.find(params[:id])
         course.destroy 
-        head :no_content 
+        render json: course
     end
 
     def students_index

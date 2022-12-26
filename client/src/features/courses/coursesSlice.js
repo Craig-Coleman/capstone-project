@@ -16,7 +16,15 @@ export const addCourse = createAsyncThunk("courses/addCourse", (newCourse) => {
     })
     .then(res => res.json())
     .then(course => course)
-})
+});
+
+export const deleteCourse = createAsyncThunk("courses/deleteCourse", (courseId) => {
+    return fetch(`/courses/${courseId}`, {
+        method: "DELETE",
+    })
+    .then(res => res.json())
+    .then(course => course)
+});
 
 const coursesSlice = createSlice({
     name: 'courses',
@@ -51,7 +59,6 @@ const coursesSlice = createSlice({
         },
         [fetchCourses.fulfilled](state, action) {
             state.courses = action.payload;
-
             state.assignments = action.payload.map((course) => course.assignments)[0]
             state.students = action.payload.map((course) => course.students)
             state.status = "idle"
@@ -62,6 +69,13 @@ const coursesSlice = createSlice({
         [addCourse.fulfilled](state, action) {
             state.courses.push(action.payload);
             state.status = "idle"
+        },
+        [deleteCourse.pending](state) {
+            state.status = "loading";
+        },
+        [deleteCourse.fulfilled](state, action) {
+            state.courses = state.courses.filter(course => course.id !== action.payload.id);
+            state.status = "idle";
         }
     },
 });
