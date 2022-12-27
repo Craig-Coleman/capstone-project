@@ -37,12 +37,12 @@ function CourseList() {
     };
     
     function handleSubmit(event) {
+        event.preventDefault();
         const newCourse = {
             title: courseName,
             period: period,
             grade_level: gradeLevel
         }
-        event.preventDefault();
         dispatch(addCourse(newCourse));
         const form = document.getElementById('addform');
         form.hidden = true;

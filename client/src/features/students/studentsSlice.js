@@ -7,7 +7,7 @@ export const fetchStudents = createAsyncThunk("students/fetchStudents", () => {
 });
 
 export const addStudent = createAsyncThunk("students/addStudent", (newStudentInfo) => {
-    return fetch(`/courses/${newStudentInfo.course_id}/students`, {
+    return fetch(`/students`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -24,7 +24,8 @@ const studentsSlice = createSlice({
         students: [],
         assignments: [],
         status: 'idle',
-        error: null
+        error: null, 
+        success: null
     },
     reducers: {
 
@@ -42,10 +43,8 @@ const studentsSlice = createSlice({
         },
         [addStudent.fulfilled](state,action) {
             state.students.push(action.payload);
+            state.success = "student added!";
             state.status = "idle";
-        },
-        [addStudent.rejected](state, action) {
-            console.log(action.payload)
         }
     },
 });

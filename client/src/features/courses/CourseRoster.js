@@ -17,6 +17,7 @@ function CourseRoster() {
     const selectedCourseId = useSelector((state) => state.courses.selectedCourse);
     const selectedCourse = courses.filter(course => course.id === selectedCourseId)[0];
     const students = selectedCourse.students;
+    const successMessage = useSelector((state) => state.students.success)
 
     const roster = students.map(student => {
         return (
@@ -34,44 +35,29 @@ function CourseRoster() {
     function handleSubmit(event) {
         event.preventDefault();
         const newStudentInfo = {
-            course_id: selectedCourse.id,
             first_name: firstName,
             last_name: lastName,
             grade_level: gradeLevel,
             classification: classification,
-            birth_date: birthDate
+            birth_date: birthDate,
+            periods_attributes: [
+                { number: selectedCourse.period, 
+                  course_id: selectedCourse.id,
+                  start_time: '08:50',
+                  end_time: '09:40'
+                }]
         };
         dispatch(addStudent(newStudentInfo));
         const form = document.getElementById("form");
         form.hidden = true;
         const button = document.getElementById("addButton");
         button.hidden = false;
-    }
-
-    const newStudentInfo = {
-        course_id: selectedCourse.id,
-        first_name: firstName,
-        last_name: lastName,
-        grade_level: gradeLevel,
-        classification: classification,
-        birth_date: birthDate
+        setFirstName("");
+        setLastName("");
+        setGradeLevel("");
+        setClassification("");
+        setBirthDate("");
     };
-
-    function testAdd(student) {
-        console.log(student)
-        fetch(`/courses/${student.course_id}/students`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(student)
-        })
-        .then(res => res.json())
-        .then(data => console.log(data));
-    }
-    
-
-    //first_name last_name grade_level classification birth_date
 
     return(
         <div>
@@ -121,7 +107,7 @@ function CourseRoster() {
                 </select>
                 <input type="submit" value="Save Student"></input>
             </form>
-            <button onClick={function() {testAdd(newStudentInfo)}}>Test</button>
+            <h3>{successMessage}</h3>
         </div>
     );
 };

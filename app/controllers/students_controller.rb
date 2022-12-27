@@ -38,17 +38,10 @@ class StudentsController < ApplicationController
         render json: assignments, include: :student 
     end
 
-    def new_student_to_roster
-        course = Course.find(params[:course_id])
-        params = student_params.except(:course_id)
-        student = course.students.create!(params)
-        render json: student
-    end
-
     private
     
     def student_params
-        params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birth_date, :course_id)
+        params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birth_date, period_ids: [], :periods_attributes => [:id, :number, :course_id, :start_time, :end_time])
     end
 
     def render_unprocessable_entity_response(invalid)
