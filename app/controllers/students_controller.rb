@@ -1,5 +1,7 @@
 class StudentsController < ApplicationController
 
+    wrap_parameters false
+
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
@@ -36,10 +38,17 @@ class StudentsController < ApplicationController
         render json: assignments, include: :student 
     end
 
+    def new_student_to_roster
+        course = Course.find(params[:course_id])
+        params = student_params.except(:course_id)
+        student = course.students.create!(params)
+        render json: student
+    end
+
     private
     
     def student_params
-        params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birthdate)
+        params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birth_date, :course_id)
     end
 
     def render_unprocessable_entity_response(invalid)

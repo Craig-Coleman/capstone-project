@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   delete '/logout', to: "sessions#destroy"
 
   get '/courses/:course_id/students', to: "courses#students_index"
+  post '/courses/:course_id/students', to: "students#new_student_to_roster"
   get '/students/:student_id/assignments', to: "students#assignments_index"
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
