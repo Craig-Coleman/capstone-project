@@ -151,6 +151,7 @@ const dataSlice = createSlice({
         },
         [addStudent.fulfilled](state,action) {
             state.students.push(action.payload);
+            state.courseStudents.push(action.payload)
             state.success = "student added!";
             state.status = "idle";
         },
@@ -160,6 +161,14 @@ const dataSlice = createSlice({
         [updateStudent.fulfilled](state, action) {
             state.students.filter(student => student.id !== action.payload.id);
             state.students.push(action.payload);
+            state.status = "idle";
+        },
+        [deleteStudent.pending](state) {
+            state.status = "loading";
+        },
+        [deleteStudent.fulfilled](state, action) {
+            state.students.filter(student => student.id !== action.payload.id);
+            state.courseStudents.filter(student => student.id !== action.payload.id);
             state.status = "idle";
         }
     },

@@ -19,13 +19,9 @@ function CourseRoster() {
     const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
     const successMessage = useSelector((state) => state.courses.success);
 
-    const students = useSelector((state) => state.courses.students);
-    const periods = students.map(student => student.periods[0]);
-    const selectedPeriods = periods.filter(period => period.course_id === selectedCourse.id);
-    const selectedStudentIds = selectedPeriods.map(period => period.student_id)
-    const selectedStudents = students.filter(student => selectedStudentIds.includes(student.id))
+    const students = useSelector((state) => state.courses.courseStudents);
 
-    const roster = selectedStudents.map(student => {
+    const roster = students.map(student => {
         return (
             <div key={student.id}>
                 <li>{student.last_name}, {student.first_name}</li>
