@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 function StudentList() {
 
-    const students = useSelector((state) => state.students.students)
+    const students = useSelector((state) => state.courses.students)
 
     const studentList = students.map((student) => {
         return(

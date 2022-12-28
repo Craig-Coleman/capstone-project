@@ -28,7 +28,7 @@ export const deleteCourse = createAsyncThunk("courses/deleteCourse", (courseId) 
 
 export const updateCourse = createAsyncThunk("courses/updateCourse", (courseData) => {
     return fetch(`/courses/${courseData.id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json"
         },
@@ -38,30 +38,50 @@ export const updateCourse = createAsyncThunk("courses/updateCourse", (courseData
     .then(course => course);
 });
 
-const coursesSlice = createSlice({
+export const fetchStudents = createAsyncThunk("students/fetchStudents", () => {
+    return fetch("/students")
+        .then((response) => response.json())
+        .then((students) => students)
+});
+
+export const addStudent = createAsyncThunk("students/addStudent", (newStudentInfo) => {
+    return fetch(`/students`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newStudentInfo)
+    })
+    .then(res => res.json())
+    .then(student => student);
+});
+
+export const updateStudent = createAsyncThunk("students/updateStudent", (updatedStudentInfo) => {
+    return fetch(`/students/${updatedStudentInfo.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedStudentInfo)
+    })
+    .then(res => res.json())
+    .then(student => student)
+})
+
+const dataSlice = createSlice({
     name: 'courses',
     initialState: {
         courses: [],
-        assignments: [],
+        courseAssignments: [],
+        courseStudents: [],
         students: [],
+        assignments: [],
         selectedStudent:null,
         selectedCourse: null,
         status: 'idle',
         error: null
     },
     reducers: {
-        courseAdded(state, action) {
-            state.entities.push(action.payload)
-        },
-        courseUpdated(state, action) {
-            const course = state.entities.find((course) => course.id === action.payload.id);
-            course.title = action.payload.title;
-            course.period = action.payload.period; 
-            course.grade_level = action.payload.grade_level; 
-        },
-        courseDeleted(state, action) {
-            state.courses.filter((course) => course.id !== action.payload.id);
-        },
         courseSelected(state, action) {
             state.selectedCourse = action.payload
         },
@@ -75,8 +95,8 @@ const coursesSlice = createSlice({
         },
         [fetchCourses.fulfilled](state, action) {
             state.courses = action.payload;
-            state.assignments = action.payload.map((course) => course.assignments)[0]
-            state.students = action.payload.map((course) => course.students)
+            state.courseAssignments = action.payload.map((course) => course.assignments)[0]
+            state.courseStudents = action.payload.map((course) => course.students)
             state.status = "idle"
         },
         [addCourse.pending](state) {
@@ -100,10 +120,33 @@ const coursesSlice = createSlice({
             state.courses = state.courses.filter(course => course.id !== action.payload.id);
             state.courses.push(action.payload)
             state.status = "idle";
+        },
+        [fetchStudents.pending](state) {
+            state.status = "loading";
+        },
+        [fetchStudents.fulfilled](state, action) {
+            state.students = action.payload;
+            state.status = "success"
+        },
+        [addStudent.pending](state) {
+            state.status = "loading";
+        },
+        [addStudent.fulfilled](state,action) {
+            state.students.push(action.payload);
+            state.success = "student added!";
+            state.status = "idle";
+        },
+        [updateStudent.pending](state) {
+            state.status = "loading"
+        },
+        [updateStudent.fulfilled](state, action) {
+            state.students.filter(student => student.id !== action.payload.id);
+            state.students.push(action.payload);
+            state.status = "idle";
         }
     },
 });
 
-export const {courseAdded, courseUpdated, courseDeleted, courseSelected, studentSelected} = coursesSlice.actions;
+export const {courseSelected, studentSelected} = dataSlice.actions;
 
-export default coursesSlice.reducer;
+export default dataSlice.reducer;

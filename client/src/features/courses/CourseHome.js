@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import CourseNavBar from './CourseNavBar';
-import { updateCourse } from './coursesSlice';
+import { updateCourse } from './dataSlice';
 
 function CourseHome() {
 

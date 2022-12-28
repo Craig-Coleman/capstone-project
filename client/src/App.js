@@ -41,30 +41,6 @@ function App() {
   return (
     <div>
       <Header setUser={setUser} />
-      <Route exact path="/">
-        <HomePage />
-      </Route>
-      <Route path="/courselist">
-        <CourseList />
-      </Route>
-      <Route path="/coursehome">
-        <CourseHome />
-      </Route>
-      <Route path="/courseroster">
-        <CourseRoster />
-      </Route>
-      <Route path="/studentlist">
-        <StudentList />
-      </Route>
-      <Route path="/studentinfo">
-        <StudentInfo />
-      </Route>
-      <Route path="/coursegradebook">
-        <CourseGradebook />
-      </Route>
-      <Route path="/userinfo">
-        <UserInfo setUser={setUser} />
-      </Route>
     </div>
   );
 }

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import CourseNavBar from './CourseNavBar';
-import { studentSelected } from './coursesSlice';
-import { addStudent } from '../students/studentsSlice';
+import { studentSelected } from './dataSlice';
+import { addStudent } from './dataSlice';
 
 function CourseRoster() {
 
@@ -20,7 +20,7 @@ function CourseRoster() {
     const selectedCourseId = useSelector((state) => state.courses.selectedCourse);
     const selectedCourse = courses.filter(course => course.id === selectedCourseId)[0];
     const students = selectedCourse.students;
-    const successMessage = useSelector((state) => state.students.success)
+    const successMessage = useSelector((state) => state.courses.success)
 
     const roster = students.map(student => {
         return (
