@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
+import CourseNavBar from '../courses/CourseNavBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { updateStudent, deleteStudent } from '../courses/dataSlice';
+import { updateStudent } from '../courses/dataSlice';
 
 function StudentInfo() {
 
     const dispatch = useDispatch();
-    const history = useHistory();
 
-    const selectedStudent = useSelector((state) => state.courses.selectedStudent)[0];
+    const student = useSelector((state) => state.courses.selectedStudent)[0];
 
-    const year = selectedStudent.birth_date.toString().substr(0, 4);
-    const month = selectedStudent.birth_date.toString().substr(5, 2);
-    const day = selectedStudent.birth_date.toString().substr(8, 2);
+
+    const year = student.birth_date.toString().substr(0, 4);
+    const month = student.birth_date.toString().substr(5, 2);
+    const day = student.birth_date.toString().substr(8, 2);
     const formattedBirthday = `${year} - ${month} - ${day}`
 
-    const [firstName, setFirstName] = useState(selectedStudent.first_name);
-    const [lastName, setLastName] = useState(selectedStudent.last_name);
-    const [gradeLevel, setGradeLevel] = useState(selectedStudent.grade_level);
-    const [classification, setClassification] = useState(selectedStudent.classification);
+    const [firstName, setFirstName] = useState(student.first_name);
+    const [lastName, setLastName] = useState(student.last_name);
+    const [gradeLevel, setGradeLevel] = useState(student.grade_level);
+    const [classification, setClassification] = useState(student.classification);
     const [birthDate, setBirthDate] = useState(formattedBirthday);
 
 
@@ -36,7 +36,7 @@ function StudentInfo() {
     function handleSubmit(event) {
         event.preventDefault();
         const updatedStudentInfo = {
-            id: selectedStudent.id,
+            id: student.id,
             first_name: firstName,
             last_name: lastName,
             birth_date: birthDate,
@@ -54,15 +54,9 @@ function StudentInfo() {
         date.hidden = true;
     }; 
 
-    function handleDeleteStudent(id) {
-        dispatch(deleteStudent(id));
-        history.goBack();
-    }
-
-    if (selectedStudent) 
-
     return(
         <div>
+            <CourseNavBar />
             <img alt='pic'></img>
              <form onSubmit={event => handleSubmit(event)}>
                 <label>First Name  </label>
@@ -91,7 +85,7 @@ function StudentInfo() {
                     ></input>
                 <select 
                     className="input"
-                    value={selectedStudent.grade_level} 
+                    value={student.grade_level} 
                     onChange={(event) => setGradeLevel(event.target.value)}>
                         <option value={null}>Select Grade Level</option>
                         <option value={9}>9th</option>
@@ -101,7 +95,7 @@ function StudentInfo() {
                 </select>
                 <select 
                     className="input"
-                    value={selectedStudent.classification} 
+                    value={student.classification} 
                     onChange={(event) => setClassification(event.target.value)}>
                         <option value={null}>Select Student Classification</option>
                         <option value="freshman">Freshman</option>
@@ -117,7 +111,6 @@ function StudentInfo() {
                     ></input>
             </form>
             <button onClick={handleEditForm}>edit</button>
-            <button onClick={function() {handleDeleteStudent(selectedStudent.id)}}>Delete Student</button>
         </div>
     );
 };

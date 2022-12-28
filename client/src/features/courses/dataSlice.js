@@ -51,7 +51,6 @@ export const fetchStudents = createAsyncThunk("data/fetchStudents", () => {
 });
 
 export const addStudent = createAsyncThunk("data/addStudent", (newStudentInfo) => {
-    console.log(newStudentInfo)
     return fetch(`/students`, {
         method: "POST",
         headers: {
@@ -167,8 +166,8 @@ const dataSlice = createSlice({
             state.status = "loading";
         },
         [deleteStudent.fulfilled](state, action) {
-            state.students.filter(student => student.id !== action.payload.id);
-            state.courseStudents.filter(student => student.id !== action.payload.id);
+            state.students = state.students.filter(student => student.id !== action.payload.id);
+            state.courseStudents = state.courseStudents.filter(student => student.id !== action.payload.id);
             state.status = "idle";
         }
     },
