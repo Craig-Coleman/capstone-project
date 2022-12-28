@@ -44,6 +44,7 @@ const coursesSlice = createSlice({
         courses: [],
         assignments: [],
         students: [],
+        selectedStudent:null,
         selectedCourse: null,
         status: 'idle',
         error: null
@@ -63,6 +64,9 @@ const coursesSlice = createSlice({
         },
         courseSelected(state, action) {
             state.selectedCourse = action.payload
+        },
+        studentSelected(state, action) {
+            state.selectedStudent = action.payload
         }
     },
     extraReducers: {
@@ -100,6 +104,6 @@ const coursesSlice = createSlice({
     },
 });
 
-export const {courseAdded, courseUpdated, courseDeleted, courseSelected} = coursesSlice.actions;
+export const {courseAdded, courseUpdated, courseDeleted, courseSelected, studentSelected} = coursesSlice.actions;
 
 export default coursesSlice.reducer;

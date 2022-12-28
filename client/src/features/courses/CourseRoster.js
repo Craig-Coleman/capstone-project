@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import CourseNavBar from './CourseNavBar';
+import { studentSelected } from './coursesSlice';
 import { addStudent } from '../students/studentsSlice';
 
 function CourseRoster() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -21,9 +24,17 @@ function CourseRoster() {
 
     const roster = students.map(student => {
         return (
-            <li key={student.id}>{student.last_name}, {student.first_name}</li>
+            <div key={student.id}>
+                <li>{student.last_name}, {student.first_name}</li>
+                <button id={student.id} onClick={function() {handleStudentClick(student.id)}}>Student Info</button>
+            </div>
         )
     });
+
+    function handleStudentClick(id) {
+        dispatch(studentSelected(id));
+        history.push("/studentinfo");
+    }
 
     function handleClickAddStudent() {
         const form = document.getElementById("form");

@@ -5,6 +5,11 @@ import { addCourse } from './coursesSlice';
 
 function CourseList() {
 
+    const selectedStudentId = useSelector((state) => state.courses.selectedStudent)
+    const selectedCourseId = useSelector((state) => state.courses.selectedCourse)
+    const course = useSelector((state) => state.courses.courses.filter(course => course.id === selectedCourseId))
+    console.log(course[0].students)
+
     const dispatch = useDispatch();
 
     const [courseName, setCourseName] = useState("");
