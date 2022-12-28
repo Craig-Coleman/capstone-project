@@ -1,7 +1,8 @@
 class Student < ApplicationRecord
-    has_many :periods
-    has_many :assignments, dependent: :destroy  
-    has_many :courses, through: :periods 
+    has_many :periods, dependent: :destroy
+    has_many :assignments, -> { order(due_date: :desc)}, dependent: :destroy  
+    has_many :courses, -> { order(period: :asc)},
+             :through => :periods 
 
     accepts_nested_attributes_for :periods
 

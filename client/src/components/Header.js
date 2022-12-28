@@ -36,7 +36,7 @@ function Header({ setUser }) {
         <div>
             <h1>{user.first_name} {user.last_name}'s Teacher Portal</h1>
             <button onClick={handleLogout}>Logout</button>
-            <NavBar setUser={setUser} />
+            <NavBar />
         </div>
     );
 };

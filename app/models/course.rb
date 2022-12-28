@@ -1,8 +1,9 @@
 class Course < ApplicationRecord
     belongs_to :user 
-    has_many :assignments, dependent: :destroy  
-    has_many :periods 
-    has_many :students, through: :periods 
+    has_many :assignments, -> { order(due_date: :desc)}, dependent: :destroy  
+    has_many :periods, dependent: :destroy 
+    has_many :students, -> { order(last_name: :asc)}, 
+             :through => :periods
 
     validates :title, presence: true 
     validates :period, presence: true

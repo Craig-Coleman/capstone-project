@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateStudent } from '../courses/dataSlice';
+import { useHistory } from 'react-router-dom';
+import { updateStudent, deleteStudent } from '../courses/dataSlice';
 
 function StudentInfo() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const selectedStudentId = useSelector((state) => state.courses.selectedStudent)
-    const selectedCourseId = useSelector((state) => state.courses.selectedCourse)
-    const selectedCourse = useSelector((state) => state.courses.courses.filter(course => course.id === selectedCourseId))
-    // const selectedStudent = selectedCourse[0].students.filter(student => student.id === selectedStudentId)[0]
-
-    const students = useSelector((state) => state.courses.students)
-    console.log(students)
-
     const selectedStudent = useSelector((state) => state.courses.students.filter(student => student.id === selectedStudentId)[0])
 
     const year = selectedStudent.birth_date.toString().substr(0, 4);
@@ -58,10 +53,11 @@ function StudentInfo() {
         saveButton.hidden = true;
         const date = document.getElementById("date");
         date.hidden = true;
-    } 
+    }; 
 
     function handleDeleteStudent(id) {
-        console.log(id);
+        dispatch(deleteStudent(id));
+        history.goBack();
     }
 
     if (selectedStudent) 

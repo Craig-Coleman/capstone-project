@@ -1,15 +1,7 @@
 import React from 'react';
-import { Route, NavLink } from "react-router-dom";
-import HomePage from './HomePage';
-import CourseList from '../features/courses/CourseList';
-import CourseHome from '../features/courses/CourseHome';
-import CourseRoster from '../features/courses/CourseRoster';
-import StudentInfo from '../features/students/StudentInfo';
-import CourseGradebook from '../features/courses/CourseGradebook';
-import UserInfo from '../features/users/UserInfo';
-import StudentList from '../features/students/StudentList';
+import { NavLink } from "react-router-dom";
 
-function NavBar({ setUser }) {
+function NavBar() {
 
     return(
         <div id="navbar">
@@ -43,30 +35,6 @@ function NavBar({ setUser }) {
             >
                 Student List
             </NavLink>
-            <Route exact path="/">
-                <HomePage />
-            </Route>
-            <Route path="/courselist">
-                <CourseList />
-            </Route>
-            <Route path="/coursehome">
-                <CourseHome />
-            </Route>
-            <Route path="/courseroster">
-                <CourseRoster />
-            </Route>
-            <Route path="/studentlist">
-                <StudentList />
-            </Route>
-            <Route path="/studentinfo">
-                <StudentInfo />
-            </Route>
-            <Route path="/coursegradebook">
-                <CourseGradebook />
-            </Route>
-            <Route path="/userinfo">
-                <UserInfo setUser={setUser} />
-            </Route>
         </div>
     );
 };
