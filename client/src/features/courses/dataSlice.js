@@ -38,6 +38,12 @@ export const updateCourse = createAsyncThunk("data/updateCourse", (courseData) =
     .then(course => course);
 });
 
+export const fetchCourseStudents = createAsyncThunk("data/fetchCourseStudents", (id) => {
+    return fetch(`courses/${id}/students`)
+    .then(res => res.json())
+    .then(students => students)
+});
+
 export const fetchStudents = createAsyncThunk("data/fetchStudents", () => {
     return fetch("/students")
         .then((response) => response.json())
@@ -45,6 +51,7 @@ export const fetchStudents = createAsyncThunk("data/fetchStudents", () => {
 });
 
 export const addStudent = createAsyncThunk("data/addStudent", (newStudentInfo) => {
+    console.log(newStudentInfo)
     return fetch(`/students`, {
         method: "POST",
         headers: {
@@ -80,10 +87,9 @@ const dataSlice = createSlice({
     name: 'data',
     initialState: {
         courses: [],
-        courseAssignments: [],
-        courseStudents: [],
         students: [],
         assignments: [],
+        courseStudents: [],
         selectedStudent:null,
         selectedCourse: null,
         status: 'idle',
@@ -91,10 +97,10 @@ const dataSlice = createSlice({
     },
     reducers: {
         courseSelected(state, action) {
-            state.selectedCourse = action.payload
+            state.selectedCourse = state.courses.filter(course => course.id === action.payload);
         },
         studentSelected(state, action) {
-            state.selectedStudent = action.payload
+            state.selectedStudent = state.students.filter(student => student.id === action.payload);
         }
     },
     extraReducers: {
@@ -103,8 +109,6 @@ const dataSlice = createSlice({
         },
         [fetchCourses.fulfilled](state, action) {
             state.courses = action.payload;
-            state.courseAssignments = action.payload.map((course) => course.assignments)[0]
-            state.courseStudents = action.payload.map((course) => course.students)
             state.status = "idle"
         },
         [addCourse.pending](state) {
@@ -128,6 +132,12 @@ const dataSlice = createSlice({
             state.courses = state.courses.filter(course => course.id !== action.payload.id);
             state.courses.push(action.payload)
             state.status = "idle";
+        },
+        [fetchCourseStudents.pending](state) {
+            state.status = "loading"
+        },
+        [fetchCourseStudents.fulfilled](state, action) {
+            state.courseStudents = action.payload
         },
         [fetchStudents.pending](state) {
             state.status = "loading";

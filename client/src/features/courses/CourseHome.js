@@ -7,9 +7,7 @@ function CourseHome() {
 
     const dispatch = useDispatch();
 
-    const courses = useSelector((state) => state.courses.courses)
-    const selectedCourseId = useSelector((state) => state.courses.selectedCourse);
-    const selectedCourse = courses.filter(course => course.id === selectedCourseId)[0];
+    const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
 
     const [courseName, setCourseName] = useState(selectedCourse.title);
     const [gradeLevel, setGradeLevel] = useState(selectedCourse.grade_level);

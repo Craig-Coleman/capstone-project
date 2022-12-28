@@ -16,14 +16,12 @@ function CourseRoster() {
     const [classification, setClassification] = useState("");
     const [birthDate, setBirthDate] = useState("");
 
-    const courses = useSelector((state) => state.courses.courses)
-    const selectedCourseId = useSelector((state) => state.courses.selectedCourse);
-    const selectedCourse = courses.filter(course => course.id === selectedCourseId)[0];
-    const successMessage = useSelector((state) => state.courses.success)
+    const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
+    const successMessage = useSelector((state) => state.courses.success);
 
     const students = useSelector((state) => state.courses.students);
     const periods = students.map(student => student.periods[0]);
-    const selectedPeriods = periods.filter(period => period.course_id === selectedCourseId);
+    const selectedPeriods = periods.filter(period => period.course_id === selectedCourse.id);
     const selectedStudentIds = selectedPeriods.map(period => period.student_id)
     const selectedStudents = students.filter(student => selectedStudentIds.includes(student.id))
 
@@ -50,6 +48,15 @@ function CourseRoster() {
 
     function handleSubmit(event) {
         event.preventDefault();
+        const newStudentAssignments = [];
+        selectedCourse.assignments.map(assignment => newStudentAssignments.push({
+            course_id: selectedCourse.id,
+            title: assignment.title,
+            description: assignment.description,
+            assign_date: assignment.assign_date,
+            due_date: assignment.due_date,
+            score: null
+        }));
         const newStudentInfo = {
             first_name: firstName,
             last_name: lastName,
@@ -61,7 +68,8 @@ function CourseRoster() {
                   course_id: selectedCourse.id,
                   start_time: '08:50',
                   end_time: '09:40'
-                }]
+                }],
+             assignments_attributes: newStudentAssignments
         };
         dispatch(addStudent(newStudentInfo));
         const form = document.getElementById("form");

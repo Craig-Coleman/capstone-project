@@ -41,7 +41,7 @@ class StudentsController < ApplicationController
     private
     
     def student_params
-        params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birth_date, period_ids: [], :periods_attributes => [:id, :number, :course_id, :start_time, :end_time])
+        params.permit(:id, :first_name, :last_name, :grade_level, :classification, :birth_date, period_ids: [], :periods_attributes => [:id, :number, :course_id, :start_time, :end_time], assignment_ids: [], :assignments_attributes => [:title, :description, :assign_date, :due_date, :score, :course_id])
     end
 
     def render_unprocessable_entity_response(invalid)

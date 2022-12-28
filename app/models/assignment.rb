@@ -5,5 +5,5 @@ class Assignment < ApplicationRecord
     validates :title, presence: true
     validates :assign_date, presence: true 
     validates :due_date, presence: true 
-    validates :score, presence: true, numericality: { greater_than_or_equal_to: 0 }
+    validates :score, presence: true, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
 end

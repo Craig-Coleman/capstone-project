@@ -5,6 +5,7 @@ class Student < ApplicationRecord
              :through => :periods 
 
     accepts_nested_attributes_for :periods
+    accepts_nested_attributes_for :assignments
 
     validates :first_name, presence: true 
     validates :last_name, presence: true 

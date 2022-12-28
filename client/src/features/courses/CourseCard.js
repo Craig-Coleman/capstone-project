@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
-import { courseSelected, deleteCourse } from './dataSlice';
+import { courseSelected, fetchCourseStudents, deleteCourse } from './dataSlice';
 
 function CourseCard({ course }) {
 
@@ -10,6 +10,7 @@ function CourseCard({ course }) {
 
     function handleToCourseClick(id) {
         dispatch(courseSelected(id));
+        dispatch(fetchCourseStudents(id));
         history.push('/coursehome')
     };
 

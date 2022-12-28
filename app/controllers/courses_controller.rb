@@ -35,7 +35,7 @@ class CoursesController < ApplicationController
     def students_index
         course = Course.find(params[:course_id])
         students = course.students 
-        render json: students, include: :course
+        render json: students, include: :course, include: :assignments
     end
 
     private 

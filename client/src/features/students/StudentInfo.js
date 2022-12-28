@@ -8,8 +8,7 @@ function StudentInfo() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const selectedStudentId = useSelector((state) => state.courses.selectedStudent)
-    const selectedStudent = useSelector((state) => state.courses.students.filter(student => student.id === selectedStudentId)[0])
+    const selectedStudent = useSelector((state) => state.courses.selectedStudent)[0];
 
     const year = selectedStudent.birth_date.toString().substr(0, 4);
     const month = selectedStudent.birth_date.toString().substr(5, 2);
