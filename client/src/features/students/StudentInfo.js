@@ -7,19 +7,14 @@ function StudentInfo() {
 
     const dispatch = useDispatch();
 
-    const student = useSelector((state) => state.courses.selectedStudent)[0];
-
-
-    const year = student.birth_date.toString().substr(0, 4);
-    const month = student.birth_date.toString().substr(5, 2);
-    const day = student.birth_date.toString().substr(8, 2);
-    const formattedBirthday = `${year} - ${month} - ${day}`
+    const studentArr = useSelector((state) => state.courses.selectedStudent);
+    const student = studentArr[0];
 
     const [firstName, setFirstName] = useState(student.first_name);
     const [lastName, setLastName] = useState(student.last_name);
     const [gradeLevel, setGradeLevel] = useState(student.grade_level);
     const [classification, setClassification] = useState(student.classification);
-    const [birthDate, setBirthDate] = useState(formattedBirthday);
+    const [birthDate, setBirthDate] = useState(student.birth_date);
 
 
     function handleEditForm() {
@@ -42,6 +37,8 @@ function StudentInfo() {
             birth_date: birthDate,
             grade_level: gradeLevel,
             classification: classification,
+            assignments: student.assignments,
+            periods: student.periods
         };
         dispatch(updateStudent(updatedStudentInfo));
         const inputs = Array.from(document.getElementsByClassName("input"));
@@ -75,7 +72,7 @@ function StudentInfo() {
                         onChange={event => setLastName(event.target.value)}
                         value={lastName}
                     ></input>
-                <label>Student Birthdate: {month}/{day}/{year}</label>
+                <label>Student Birthdate: {birthDate}</label>
                     <input
                         id="date"
                         hidden={true}
