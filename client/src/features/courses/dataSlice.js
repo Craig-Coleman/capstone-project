@@ -1,9 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, current, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCourses = createAsyncThunk("data/fetchCourses", () => {
     return fetch("/courses")
         .then((response) => response.json())
-        .then((courses) => courses)
+        .then((courses) => courses);
 });
 
 export const addCourse = createAsyncThunk("data/addCourse", (newCourse) => {
@@ -15,7 +15,7 @@ export const addCourse = createAsyncThunk("data/addCourse", (newCourse) => {
         body: JSON.stringify(newCourse)
     })
     .then(res => res.json())
-    .then(course => course)
+    .then(course => course);
 });
 
 export const deleteCourse = createAsyncThunk("data/deleteCourse", (courseId) => {
@@ -23,7 +23,7 @@ export const deleteCourse = createAsyncThunk("data/deleteCourse", (courseId) => 
         method: "DELETE",
     })
     .then(res => res.json())
-    .then(course => course)
+    .then(course => course);
 });
 
 export const updateCourse = createAsyncThunk("data/updateCourse", (courseData) => {
@@ -41,13 +41,13 @@ export const updateCourse = createAsyncThunk("data/updateCourse", (courseData) =
 export const fetchCourseStudents = createAsyncThunk("data/fetchCourseStudents", (id) => {
     return fetch(`courses/${id}/students`)
     .then(res => res.json())
-    .then(students => students)
+    .then(students => students);
 });
 
 export const fetchStudents = createAsyncThunk("data/fetchStudents", () => {
     return fetch("/students")
         .then((response) => response.json())
-        .then((students) => students)
+        .then((students) => students);
 });
 
 export const addStudent = createAsyncThunk("data/addStudent", (newStudentInfo) => {
@@ -71,7 +71,7 @@ export const updateStudent = createAsyncThunk("data/updateStudent", (updatedStud
         body: JSON.stringify(updatedStudentInfo)
     })
     .then(res => res.json())
-    .then(student => student)
+    .then(student => student);
 });
 
 export const deleteStudent = createAsyncThunk("data/deleteStudent", (id) => {
@@ -79,7 +79,19 @@ export const deleteStudent = createAsyncThunk("data/deleteStudent", (id) => {
         method: "DELETE"
     })
     .then(res => res.json())
-    .then(student => student)
+    .then(student => student);
+});
+
+export const addAssignment = createAsyncThunk("data/addAssignment", (newAssignment) => {
+    return fetch('/assignments', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newAssignment)
+    })
+    .then(res => res.json())
+    .then(assignment => assignment);
 });
 
 const dataSlice = createSlice({
@@ -87,7 +99,6 @@ const dataSlice = createSlice({
     initialState: {
         courses: [],
         students: [],
-        assignments: [],
         courseStudents: [],
         selectedStudent:null,
         selectedCourse: null,
@@ -174,6 +185,13 @@ const dataSlice = createSlice({
         [deleteStudent.fulfilled](state, action) {
             state.students = state.students.filter(student => student.id !== action.payload.id);
             state.courseStudents = state.courseStudents.filter(student => student.id !== action.payload.id);
+            state.status = "idle";
+        },
+        [addAssignment.pending](state) {
+            state.status = "loading"
+        },
+        [addAssignment.fulfilled](state, action) {
+            state.selectedCourse[0].assignments.push(action.payload)
             state.status = "idle";
         }
     },
