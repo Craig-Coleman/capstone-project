@@ -38,6 +38,17 @@ class StudentsController < ApplicationController
         render json: students, include: :course, include: :assignments
     end
 
+    # def grades_row 
+    #     student = Student.find(params[:id])
+    #     student.assignments.order(due_date: :desc)
+    #     row = []
+    #     row.push(student.last_name + " , " + student.first_name)
+    #     student.assignments.each do |assignment|
+    #         row.push(assignment.score)
+    #     end
+    #     render json: row
+    # end
+
     private
     
     def student_params

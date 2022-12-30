@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const signUp = createAsyncThunk("users/signUp", (newUserInfo) => {
-    fetch('/users', {
+    return fetch('/users', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -13,10 +13,10 @@ export const signUp = createAsyncThunk("users/signUp", (newUserInfo) => {
 });
 
 export const login = createAsyncThunk("users/login", (userInfo) => {
-    fetch("/login", {
+    return fetch('/login', {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(userInfo),
     })

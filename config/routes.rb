@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   get '/courses/:course_id/students', to: "students#roster_index"
   get '/courses/:course_id/assignments', to: "assignments#course_assignments_index"
+  get '/courses/:id/grades', to: "courses#course_grades"
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

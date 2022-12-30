@@ -34,9 +34,10 @@ const assignmentsSlice = createSlice({
     name: 'assignments',
     initialState: {
         assignments: [],
+        selectedAssignment: {},
         assignmentTitles: [],
         status: 'idle',
-        error: null
+        error: null,
     },
     reducers: {
 
@@ -63,6 +64,7 @@ const assignmentsSlice = createSlice({
         [updateAssignment.fulfilled](state, action) {
             state.assignments = state.assignments.filter(assignment => assignment.id !== action.payload.id);
             state.assignments.push(action.payload);
+            state.success = "Grade Updated!";
             state.status = "idle";
         }
     },

@@ -32,6 +32,21 @@ class CoursesController < ApplicationController
         render json: course
     end
 
+    def course_grades
+            course = Course.find(params[:id])
+            course_grades = []
+            course.students.each do |student|
+                student.assignments.order(due_date: :desc)
+                student_grades = []
+                student_grades.push(student.last_name + " , " + student.first_name)
+                student.assignments.each do |assignment|
+                    student_grades.push(assignment.score)
+                end
+                course_grades.push(student_grades)
+            end
+            render json: course_grades, status: :ok
+    end
+
     private 
 
     def course_params 

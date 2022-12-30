@@ -11,6 +11,9 @@ function CourseGradebook() {
     const students = useSelector((state) => state.students.students);
     const assignments = useSelector((state) => state.assignments.assignments);
     const assignmentTitles = useSelector((state) => state.assignments.assignmentTitles);
+    const courseGrades = useSelector((state) => state.courses.courseGrades);
+
+    console.log(courseGrades)
     
 
     const [title, setTitle] = useState("");
@@ -18,12 +21,16 @@ function CourseGradebook() {
     const [assignDate, setAssignDate] = useState("");
     const [dueDate, setDueDate] = useState("");
 
-    
     const assignmentHeaders = assignmentTitles.map((title) => {
         return (
             <th key={title}>{title}</th>
         );
     });
+
+    function enableEditing(element){
+        element.contentEditable = true;
+        element.focus()
+      };
 
       function handleKeyDown(event) {
         if (event.key === 'Enter') {
@@ -42,11 +49,6 @@ function CourseGradebook() {
             }
             dispatch(updateAssignment(updatedAssignment));
           };
-      }
-
-      function enableEditing(element){
-        element.contentEditable = true;
-        element.focus()
       };
 
     const studentAssignments = students.map(student => {
@@ -103,7 +105,6 @@ function CourseGradebook() {
                         <th>Student</th>
                        {assignmentHeaders}
                     </tr>
-                    {studentAssignments}
                </thead>
                <tbody>
                </tbody>

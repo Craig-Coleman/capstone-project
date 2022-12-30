@@ -38,12 +38,18 @@ export const updateCourse = createAsyncThunk("data/updateCourse", (courseData) =
     .then(course => course);
 });
 
+export const fetchCourseGrades = createAsyncThunk("courses/fetchCourseGrades", (id) => {
+    return fetch(`courses/${id}/grades`)
+    .then(res => res.json())
+    .then(grades => grades);
+});
+
 const coursesSlice = createSlice({
     name: 'data',
     initialState: {
         courses: [],
         students: [],
-        courseStudents: [],
+        courseGrades: [],
         selectedStudent:null,
         selectedCourse: null,
         status: 'idle',
@@ -89,6 +95,13 @@ const coursesSlice = createSlice({
             state.selectedCourse.push(action.payload);
             state.status = "idle";
         },
+        [fetchCourseGrades.pending](state) {
+            state.status = "loading";
+        },
+        [fetchCourseGrades.fulfilled](state, action) {
+            state.courseGrades = action.payload;
+            state.status = "idle";
+        }
     },
 });
 

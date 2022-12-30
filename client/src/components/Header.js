@@ -5,6 +5,7 @@ import { logout } from '../features/users/usersSlice';
 import { fetchCourses } from '../features/courses/coursesSlice';
 import { fetchStudents } from '../features/students/studentsSlice';
 import { fetchAssignments } from '../features/assignments/assignmentsSlice';
+import { fetchCourseGrades } from '../features/courses/coursesSlice';
 import NavBar from './NavBar';
 
 function Header() {
@@ -19,6 +20,7 @@ function Header() {
         dispatch(fetchCourses());
         dispatch(fetchStudents(selectedCourseId));
         dispatch(fetchAssignments(selectedCourseId));
+        dispatch(fetchCourseGrades(selectedCourseId));
     }, [dispatch, selectedCourseId]);
 
     function handleLogout() {
