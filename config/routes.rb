@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   post '/login', to: "sessions#create"
   delete '/logout', to: "sessions#destroy"
 
-  get '/courses/:course_id/students', to: "courses#students_index"
-  get '/students/:student_id/assignments', to: "students#assignments_index"
+  get '/courses/:course_id/students', to: "students#roster_index"
+  get '/courses/:course_id/assignments', to: "assignments#course_assignments_index"
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

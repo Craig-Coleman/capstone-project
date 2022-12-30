@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { deleteStudent, studentSelected } from '../courses/dataSlice';
+import { studentSelected } from '../courses/coursesSlice';
+import { deleteStudent } from './studentsSlice';
 
 function StudentCard({ student }) {
 

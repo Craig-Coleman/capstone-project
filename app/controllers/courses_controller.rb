@@ -32,16 +32,10 @@ class CoursesController < ApplicationController
         render json: course
     end
 
-    def students_index
-        course = Course.find(params[:course_id])
-        students = course.students 
-        render json: students, include: :course, include: :assignments
-    end
-
     private 
 
     def course_params 
-        params.permit(:id, :title, :period, :grade_level, :user_id)
+        params.permit(:id, :title, :period, :grade_level, :user_id, student_ids: [], students_attributes: [:id, :first_name, :last_name, :grade_level, :classification, :birth_date])
     end
 
     def render_unprocessable_entity_response(invalid)

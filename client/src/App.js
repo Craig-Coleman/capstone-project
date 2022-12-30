@@ -1,8 +1,8 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { userAdded } from './features/users/usersSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from './components/Header';
 import Auth from './components/Auth';
 import HomePage from './components/HomePage';
@@ -18,15 +18,13 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.users.user);
 
   useEffect(() => {
     fetch("/me").then((res) => {
         if (res.ok) {
           res.json().then((user) => 
-            {setUser(user);
-            dispatch(userAdded(user));
-          });
+            {dispatch(userAdded(user))});
         };
     });
   }, [dispatch]);
@@ -34,13 +32,13 @@ function App() {
   if (!user) 
     return (
       <div>
-        <Auth setUser={setUser} />
+        <Auth />
       </div>
     );
 
   return (
     <div>
-      <Header setUser={setUser} />
+      <Header />
       <Route exact path="/">
           <HomePage />
       </Route>
@@ -63,7 +61,7 @@ function App() {
           <CourseGradebook />
       </Route>
       <Route path="/userinfo">
-          <UserInfo setUser={setUser} />
+          <UserInfo />
       </Route>
     </div>
   );

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { editUserInfo } from './usersSlice';
+import { editUserInfo, deleteUser } from './usersSlice';
 
-function UserInfo({ setUser }) {
+function UserInfo() {
 
     const dispatch = useDispatch();
 
-    const user = useSelector(state => state.users.entities);
+    const user = useSelector(state => state.users.user);
 
     const history = useHistory();
 
@@ -50,13 +50,7 @@ function UserInfo({ setUser }) {
     };
 
     function handleDeleteUser(id) {
-        fetch(`/users/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        setUser(null);
+        dispatch(deleteUser(id));
         history.push("/");
     }
 

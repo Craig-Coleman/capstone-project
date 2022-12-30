@@ -1,34 +1,28 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { userRemoved } from '../features/users/usersSlice';
-import { fetchCourses } from '../features/courses/dataSlice';
-import { fetchStudents } from '../features/courses/dataSlice';
+import { logout } from '../features/users/usersSlice';
+import { fetchCourses } from '../features/courses/coursesSlice';
+import { fetchStudents } from '../features/students/studentsSlice';
+import { fetchAssignments } from '../features/assignments/assignmentsSlice';
 import NavBar from './NavBar';
 
-function Header({ setUser }) {
+function Header() {
 
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const user = useSelector((state) => state.users.entities);
+    const user = useSelector((state) => state.users.user);
+    const selectedCourseId = useSelector((state) => state.courses.selectedCourse[0].id);
 
     useEffect(() => {
         dispatch(fetchCourses());
-        dispatch(fetchStudents());
-    }, [dispatch]);
+        dispatch(fetchStudents(selectedCourseId));
+        dispatch(fetchAssignments(selectedCourseId));
+    }, [dispatch, selectedCourseId]);
 
     function handleLogout() {
-        fetch("/logout", {
-            method: "DELETE",
-        }).then((res) => {
-            if (res.ok) {
-            setUser(null);
-            (async () => {
-                await dispatch(userRemoved());
-               })();
-            };
-        }); 
+        dispatch(logout());
         history.push("/"); 
     };
 

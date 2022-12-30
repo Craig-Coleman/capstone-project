@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import CourseNavBar from './CourseNavBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAssignment } from './dataSlice';
+import { addAssignment, updateAssignment } from '../assignments/assignmentsSlice';
 
 function CourseGradebook() {
 
     const dispatch = useDispatch();
 
     const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
-    const courseStudents = useSelector((state) => state.courses.courseStudents);
-    const assignments = useSelector((state) => state.courses.selectedCourse[0].assignments);
+    const students = useSelector((state) => state.students.students);
+    const assignments = useSelector((state) => state.assignments.assignments);
+    console.log(assignments)
+    
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -24,19 +26,48 @@ function CourseGradebook() {
         );
     });
 
-    const studentAssignments = courseStudents.map((student) => {
-        const assignments = student.assignments.map((assignment) => {
-            return (
-                <td key={assignment.id}>{assignment.score}</td>
-            )
-        })
-        return(
-            <tr key={student.id}>
-                <td>{student.last_name}, {student.first_name}</td>
-                {assignments}
-            </tr>
-        )
-    });
+      function handleKeyDown(event) {
+        if (event.key === 'Enter') {
+            event.target.contentEditable = false;
+            const score = event.target.innerText
+            const assignment = assignments.filter(assignment => assignment.id === parseInt(event.target.id))[0];
+            const updatedAssignment = {
+                assign_date: assignment.assign_date,
+                course_id: assignment.course_id,
+                description: assignment.description,
+                due_date: assignment.due_date,
+                id: assignment.id,
+                title: assignment.title,
+                student_id: assignment.student_id,
+                score: score
+            }
+            dispatch(updateAssignment(updatedAssignment));
+          };
+      }
+
+      function enableEditing(element){
+        element.contentEditable = true;
+        element.focus()
+      }
+
+    // const studentAssignments = students.map((student) => {
+    //     const lassignments = student.assignments.map((assignment) => {
+    //         return (
+    //             <td 
+    //                 className="cell"
+    //                 onKeyDown={(event) => handleKeyDown(event)}
+    //                 onClick={(event) => enableEditing(event.target)} 
+    //                 key={assignment.id}
+    //                 id={assignment.id}
+    //                 >{assignment.score}</td>)
+    //     })
+    //     return(
+    //         <tr key={student.id}>
+    //             <td>{student.last_name}, {student.first_name}</td>
+    //             {lassignments}
+    //         </tr>
+    //     )
+    // });
 
     function handleClickAddAssignment() {
         const form = document.getElementById('form');
@@ -53,8 +84,14 @@ function CourseGradebook() {
             score: null,
             course_id: selectedCourse.id
         };
-        courseStudents.map(student => dispatch(addAssignment({...newAssignment, student_id: student.id})))
-    }
+        students.map(student => dispatch(addAssignment({...newAssignment, student_id: student.id})));
+        const form = document.getElementById("form");
+        form.hidden = true;
+        setTitle("");
+        setDescription("");
+        setAssignDate("");
+        setDueDate("");
+    };
 
     return(
         <div>
@@ -68,7 +105,6 @@ function CourseGradebook() {
                     </tr>
                </thead>
                <tbody>
-                {studentAssignments}
                </tbody>
             </table>
             <button onClick={handleClickAddAssignment}>Add assignment</button>

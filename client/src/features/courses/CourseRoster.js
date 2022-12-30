@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CourseNavBar from './CourseNavBar';
 import StudentCard from '../students/StudentCard';
-import { addStudent } from './dataSlice';
+import { addStudent } from '../students/studentsSlice';
 
 function CourseRoster() {
 
@@ -14,10 +14,9 @@ function CourseRoster() {
     const [classification, setClassification] = useState("");
     const [birthDate, setBirthDate] = useState("");
 
-    const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
-    const successMessage = useSelector((state) => state.courses.success);
-
-    const students = useSelector((state) => state.courses.courseStudents);
+    const course = useSelector((state) => state.courses.selectedCourse)[0];
+    const students = useSelector((state) => state.students.students);
+    console.log(students)
 
     const roster = students.map(student => {
         return (
@@ -35,8 +34,8 @@ function CourseRoster() {
     function handleSubmit(event) {
         event.preventDefault();
         const newStudentAssignments = [];
-        selectedCourse.assignments.map(assignment => newStudentAssignments.push({
-            course_id: selectedCourse.id,
+        course.assignments.map(assignment => newStudentAssignments.push({
+            course_id: course.id,
             title: assignment.title,
             description: assignment.description,
             assign_date: assignment.assign_date,
@@ -50,8 +49,8 @@ function CourseRoster() {
             classification: classification,
             birth_date: birthDate,
             periods_attributes: [
-                { number: selectedCourse.period, 
-                  course_id: selectedCourse.id,
+                { number: course.period, 
+                  course_id: course.id,
                   start_time: '08:50',
                   end_time: '09:40'
                 }],
@@ -72,7 +71,7 @@ function CourseRoster() {
     return(
         <div>
             <CourseNavBar />
-            <h1>{selectedCourse.title} Roster</h1>
+            <h1>{course.title} Roster</h1>
             {roster}
             <button 
                 id="addButton" 
@@ -117,7 +116,6 @@ function CourseRoster() {
                 </select>
                 <input type="submit" value="Save Student"></input>
             </form>
-            <h3>{successMessage}</h3>
         </div>
     );
 };

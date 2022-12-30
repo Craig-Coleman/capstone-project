@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { userAdded } from '../features/users/usersSlice';
+import { signUp, login } from '../features/users/usersSlice';
 
-function Auth({ setUser }) {
+function Auth() {
 
     const dispatch = useDispatch();
 
@@ -22,23 +22,7 @@ function Auth({ setUser }) {
             username,
             password
         };
-        fetch("/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userInfo),
-        })
-          .then(res => {
-            if (res.ok) {
-                res.json().then((user) => {
-                    setUser(user);
-                    dispatch(userAdded(user));
-                });
-            } else {
-                res.json().then((err) => setError(err.error));
-            };
-          });
+        dispatch(login(userInfo));
     };
 
     function handleClickSignUp() {
@@ -56,23 +40,7 @@ function Auth({ setUser }) {
             last_name: newLastName,
             email: newEmail
         };
-        fetch('/users', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newUserInfo),
-        })
-        .then( res => {
-            if (res.ok) {
-                res.json().then(user => {
-                    setUser(user);
-                    dispatch(userAdded(user))
-                });
-            } else {
-                res.json().then((err) => setError(err.error));
-            }
-        })
+        dispatch(signUp(newUserInfo));
         setNewUsername("");
         setNewPassword("");
         setConfirmNewPassword("");

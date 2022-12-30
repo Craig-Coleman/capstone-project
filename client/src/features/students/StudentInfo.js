@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CourseNavBar from '../courses/CourseNavBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateStudent } from '../courses/dataSlice';
+import { updateStudent } from './studentsSlice';
 
 function StudentInfo() {
 

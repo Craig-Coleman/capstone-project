@@ -3,7 +3,9 @@ class Course < ApplicationRecord
     has_many :assignments, -> { order(due_date: :desc)}, dependent: :destroy  
     has_many :periods, dependent: :destroy 
     has_many :students, -> { order(last_name: :asc)}, 
-             :through => :periods
+             :through => :periods, dependent: :destroy
+
+    accepts_nested_attributes_for :students
 
     validates :title, presence: true 
     validates :period, presence: true
