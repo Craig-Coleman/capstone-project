@@ -10,7 +10,7 @@ function CourseGradebook() {
     const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
     const students = useSelector((state) => state.students.students);
     const assignments = useSelector((state) => state.assignments.assignments);
-    console.log(assignments)
+    const assignmentTitles = useSelector((state) => state.assignments.assignmentTitles);
     
 
     const [title, setTitle] = useState("");
@@ -18,9 +18,8 @@ function CourseGradebook() {
     const [assignDate, setAssignDate] = useState("");
     const [dueDate, setDueDate] = useState("");
 
-    const uniqueTitles = [...new Set(assignments.map(assignment => assignment.title))];
     
-    const assignmentTitles = uniqueTitles.map((title) => {
+    const assignmentHeaders = assignmentTitles.map((title) => {
         return (
             <th key={title}>{title}</th>
         );
@@ -48,26 +47,27 @@ function CourseGradebook() {
       function enableEditing(element){
         element.contentEditable = true;
         element.focus()
-      }
+      };
 
-    // const studentAssignments = students.map((student) => {
-    //     const lassignments = student.assignments.map((assignment) => {
-    //         return (
-    //             <td 
-    //                 className="cell"
-    //                 onKeyDown={(event) => handleKeyDown(event)}
-    //                 onClick={(event) => enableEditing(event.target)} 
-    //                 key={assignment.id}
-    //                 id={assignment.id}
-    //                 >{assignment.score}</td>)
-    //     })
-    //     return(
-    //         <tr key={student.id}>
-    //             <td>{student.last_name}, {student.first_name}</td>
-    //             {lassignments}
-    //         </tr>
-    //     )
-    // });
+    const studentAssignments = students.map(student => {
+        const studentAssignments = student.assignments.map(assignment => {
+            return (
+                <td 
+                className="score"
+                onKeyDown={(event) => handleKeyDown(event)}
+                onClick={(event) => enableEditing(event.target)} 
+                key={assignment.id}
+                id={assignment.id}
+                >{assignment.score}</td>
+            )
+        })
+        return (
+            <tr key={student.id}>
+                <td>{student.last_name}, {student.first_name}</td>
+                {studentAssignments}
+            </tr>
+        )
+    })
 
     function handleClickAddAssignment() {
         const form = document.getElementById('form');
@@ -101,8 +101,9 @@ function CourseGradebook() {
                 <thead>
                     <tr>
                         <th>Student</th>
-                       {assignmentTitles}
+                       {assignmentHeaders}
                     </tr>
+                    {studentAssignments}
                </thead>
                <tbody>
                </tbody>

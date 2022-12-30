@@ -47,6 +47,7 @@ const assignmentsSlice = createSlice({
         },
         [fetchAssignments.fulfilled](state, action) {
             state.assignments = action.payload;
+            state.assignmentTitles = [...new Set(action.payload.map(assignment => assignment.title))]
             state.status = "idle";
         },
         [addAssignment.pending](state) {
