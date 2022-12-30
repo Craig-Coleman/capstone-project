@@ -7,8 +7,9 @@ function StudentInfo() {
 
     const dispatch = useDispatch();
 
-    const studentArr = useSelector((state) => state.courses.selectedStudent);
-    const student = studentArr[0];
+    const student = useSelector((state) => state.students.selectedStudent[0]);
+    console.log(student)
+
 
     const [firstName, setFirstName] = useState(student.first_name);
     const [lastName, setLastName] = useState(student.last_name);

@@ -7,7 +7,7 @@ export const fetchAssignments = createAsyncThunk("assignments/fetchAssignments",
 });
 
 export const addAssignment = createAsyncThunk("assignments/addAssignment", (newAssignment) => {
-    return fetch('/assignments', {
+    return fetch(`/courses/${newAssignment.course_id}/assignments`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -47,15 +47,24 @@ const assignmentsSlice = createSlice({
             state.status = "loading";
         },
         [fetchAssignments.fulfilled](state, action) {
-            state.assignments = action.payload;
-            state.assignmentTitles = [...new Set(action.payload.map(assignment => assignment.title))]
+            if (Object.keys(action.payload).includes('error')){
+                state.error = action.payload;
+            } else {
+                state.assignments = action.payload;
+                state.assignmentTitles = [...new Set(state.assignments.map(assignment => assignment.title))]
+            }
             state.status = "idle";
         },
         [addAssignment.pending](state) {
             state.status = "loading";
         },
         [addAssignment.fulfilled](state, action) {
-            state.assignments.push(action.payload);
+            if (Object.keys(action.payload).includes('errors')){
+                state.error = action.payload;
+            } else {
+                state.assignments.push(action.payload);
+                state.assignmentTitles.push(action.payload.title)
+            }
             state.status = "idle";
         },
         [updateAssignment.pending](state) {

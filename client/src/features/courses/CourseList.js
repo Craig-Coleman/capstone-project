@@ -12,6 +12,7 @@ function CourseList() {
     const [period, setPeriod] = useState("");
 
     const courses = useSelector((state) => state.courses.courses);
+    const selectedCourse = useSelector((state) => state.courses.selectedCourse)
 
     const courseList = courses.map(course => {
         return(

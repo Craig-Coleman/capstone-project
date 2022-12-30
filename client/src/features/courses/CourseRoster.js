@@ -16,7 +16,7 @@ function CourseRoster() {
 
     const course = useSelector((state) => state.courses.selectedCourse)[0];
     const students = useSelector((state) => state.students.students);
-    console.log(students)
+
 
     const roster = students.map(student => {
         return (
@@ -33,28 +33,15 @@ function CourseRoster() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const newStudentAssignments = [];
-        course.assignments.map(assignment => newStudentAssignments.push({
-            course_id: course.id,
-            title: assignment.title,
-            description: assignment.description,
-            assign_date: assignment.assign_date,
-            due_date: assignment.due_date,
-            score: null
-        }));
         const newStudentInfo = {
+            course_id: course.id,
+            studentInfo: {
             first_name: firstName,
             last_name: lastName,
             grade_level: gradeLevel,
             classification: classification,
             birth_date: birthDate,
-            periods_attributes: [
-                { number: course.period, 
-                  course_id: course.id,
-                  start_time: '08:50',
-                  end_time: '09:40'
-                }],
-             assignments_attributes: newStudentAssignments
+            }
         };
         dispatch(addStudent(newStudentInfo));
         const form = document.getElementById("form");

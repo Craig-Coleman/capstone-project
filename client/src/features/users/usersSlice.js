@@ -68,7 +68,11 @@ const usersSlice = createSlice({
             state.status = "loading";
         },
         [signUp.fulfilled](state, action) {
-            state.user = action.payload;
+            if (Object.keys(action.payload).includes('errors')){
+                state.error = action.payload;
+            } else {
+                state.user = action.payload;
+            }
             state.status = "idle";
         },
         [signUp.rejected](state, action) {
@@ -80,7 +84,15 @@ const usersSlice = createSlice({
             state.status = "loading";
         },
         [login.fulfilled](state, action) {
-            state.user = action.payload;
+            if (Object.keys(action.payload).includes('error')){
+                state.error = action.payload;
+            } else {
+                state.user = action.payload;
+            }
+            state.status = "idle";
+        },
+        [login.rejected](state, action) {
+            state.error = action.payload;
             state.status = "idle";
         },
         [logout.pending](state) {

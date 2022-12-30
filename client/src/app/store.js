@@ -10,16 +10,23 @@ import thunk from 'redux-thunk';
 const coursesPersistConfig = {
     key: 'course',
     storage,
-    whitelist: ['selectedCourse', 'selectedStudent']
+    whitelist: ['selectedCourse']
 }
 
-const persistedReducer = persistReducer(coursesPersistConfig, coursesReducer)
+const studentsPersistConfig = {
+    key: 'student',
+    storage,
+    whiteList: ['selectedStudent']
+}
+
+const coursesPersistedReducer = persistReducer(coursesPersistConfig, coursesReducer);
+const studentsPersistedReducer = persistReducer(studentsPersistConfig, studentsReducer);
 
 
 export const store = configureStore({
     reducer: {
-        courses: persistedReducer,
-        students: studentsReducer,
+        courses: coursesPersistedReducer,
+        students: studentsPersistedReducer,
         assignments: assignmentsReducer,
         users: usersReducer,
     },

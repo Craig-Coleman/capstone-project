@@ -4,7 +4,6 @@ class Student < ApplicationRecord
     has_many :courses, -> { order(period: :asc)},
              :through => :periods 
 
-    accepts_nested_attributes_for :periods
     accepts_nested_attributes_for :assignments
 
     validates :first_name, presence: true 

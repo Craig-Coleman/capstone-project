@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, current, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCourses = createAsyncThunk("data/fetchCourses", () => {
     return fetch("/courses")
@@ -45,13 +45,12 @@ export const fetchCourseGrades = createAsyncThunk("courses/fetchCourseGrades", (
 });
 
 const coursesSlice = createSlice({
-    name: 'data',
+    name: 'courses',
     initialState: {
         courses: [],
         students: [],
         courseGrades: [],
-        selectedStudent:null,
-        selectedCourse: null,
+        selectedCourse: [{id: 0, title: "class", period: 1, grade_level: 9}],
         status: 'idle',
         error: null
     },
@@ -59,9 +58,6 @@ const coursesSlice = createSlice({
         courseSelected(state, action) {
             state.selectedCourse = state.courses.filter(course => course.id === action.payload);
         },
-        studentSelected(state, action) {
-            state.selectedStudent = state.students.filter(student => student.id === action.payload);
-        }
     },
     extraReducers: {
         [fetchCourses.pending](state) {
@@ -105,6 +101,6 @@ const coursesSlice = createSlice({
     },
 });
 
-export const {courseSelected, studentSelected} = coursesSlice.actions;
+export const {courseSelected, courseDeselected, studentSelected} = coursesSlice.actions;
 
 export default coursesSlice.reducer;

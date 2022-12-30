@@ -10,8 +10,17 @@ class StudentsController < ApplicationController
         render json: students, status: :ok 
     end
 
-    def create 
-        student = Student.create!(student_params)
+    def create
+        course = Course.find(params[:course_id])
+        student = Student.create!(student_params) 
+        period = Period.create!(course_id: course.id, student_id: student.id, number: course.period, start_time: "8:05", end_time: "8:50")
+        assignments = []
+        course.assignments.map { |assignment|
+            newA = Assignment.create!(title: assignment.title, description: assignment.description, assign_date: assignment.assign_date, due_date: assignment.due_date, score: nil, student_id: student.id, course_id: course.id)
+            assignments.push(newA) 
+        }
+        assignments.sort_by { |assignment| assignment[:due_date] }.reverse
+        student.assignments = assignments
         render json: student, status: :created 
     end
 
@@ -37,17 +46,6 @@ class StudentsController < ApplicationController
         students = course.students 
         render json: students, include: :course, include: :assignments
     end
-
-    # def grades_row 
-    #     student = Student.find(params[:id])
-    #     student.assignments.order(due_date: :desc)
-    #     row = []
-    #     row.push(student.last_name + " , " + student.first_name)
-    #     student.assignments.each do |assignment|
-    #         row.push(assignment.score)
-    #     end
-    #     render json: row
-    # end
 
     private
     

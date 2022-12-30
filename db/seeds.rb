@@ -1,6 +1,6 @@
 # puts "Starting seed..."
 # user1 = User.create(username: "craig.coleman", first_name: "Craig", last_name: "Coleman", email: "craig.coleman@teacher.com", password: "123")
-# course1 = user1.courses.create(title: "Biology", period: 1, grade_level: 9)
+# course1 = user1.courses.create({id: 0, title: "Biology", period: 1, grade_level: 9})
 # course2 = user1.courses.create(title: "Chemistry", period: 2, grade_level: 10)
 # student1 = Student.create(first_name: "John", last_name: "Smith", grade_level: 9, classification: "freshman", birth_date: 20081119)
 # period1 = course1.periods.create(number: course1.period, start_time: '08:50', end_time: '08:50', student_id: student1.id)

@@ -8,8 +8,14 @@ class AssignmentsController < ApplicationController
         render json: assignments, status: :ok  
     end
 
-    def create  
-        assignment = Assignment.create!(assignment_params)
+    def create
+        course = Course.find(params[:course_id])
+        assignments = []
+        course.students.map { |student| 
+            assignment = student.assignments.create!(assignment_params)
+            assignments.push(assignment)
+        }
+        assignment = assignments[0]
         render json: assignment, status: :created 
     end
 
