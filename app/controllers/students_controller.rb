@@ -16,11 +16,11 @@ class StudentsController < ApplicationController
         period = Period.create!(course_id: course.id, student_id: student.id, number: course.period, start_time: "8:05", end_time: "8:50")
         assignments = []
         course.assignments.map { |assignment|
-            newA = Assignment.create!(title: assignment.title, description: assignment.description, assign_date: assignment.assign_date, due_date: assignment.due_date, score: nil, student_id: student.id, course_id: course.id)
+            newA = Assignment.create!(title: assignment.title, description: assignment.description, assign_date: assignment.assign_date, due_date: assignment.due_date, score: "", student_id: student.id, course_id: course.id)
             assignments.push(newA) 
         }
         assignments.sort_by { |assignment| assignment[:due_date] }.reverse
-        student.assignments = assignments
+        student.assignments = assignments.uniq { |assignment| assignment[:title] }
         render json: student, status: :created 
     end
 

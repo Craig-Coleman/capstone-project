@@ -38,12 +38,14 @@ class CoursesController < ApplicationController
             course.students.map { |student|
                 course_assignments = student.assignments.select{ |assignment| assignment.course_id == course.id}
                 course_assignments.sort_by { |assignment| assignment[:due_date] }.reverse
-                student_grades = []
-                student_grades.push(student.last_name + " , " + student.first_name)
-                course_assignments.each do |assignment|
-                    student_grades.push(assignment.score)
+                student_row = []
+                student_row.push(student.last_name + " , " + student.first_name)
+                assignments = []
+                course_assignments.map do |assignment|
+                    assignments.push(assignment)
                 end
-                course_grades.push(student_grades)
+                student_row.push(assignments)
+                course_grades.push(student_row)
             }
             render json: course_grades, status: :ok
     end

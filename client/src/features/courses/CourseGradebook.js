@@ -2,19 +2,39 @@ import React, { useState } from 'react';
 import CourseNavBar from './CourseNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAssignment, updateAssignment } from '../assignments/assignmentsSlice';
+import { fetchCourseGrades } from './coursesSlice';
 
 function CourseGradebook() {
 
     const dispatch = useDispatch();
 
-    const selectedCourse = useSelector((state) => state.courses.selectedCourse)[0];
-    const students = useSelector((state) => state.students.students);
+    const course = useSelector((state) => state.courses.selectedCourse)[0];
     const assignments = useSelector((state) => state.assignments.assignments);
+    const students = useSelector((state) => state.students.students);
     const assignmentTitles = useSelector((state) => state.assignments.assignmentTitles);
-    const courseGrades = useSelector((state) => state.courses.courseGrades);
-    const assignmentError = useSelector((state) => state.assignments.error);
-    
+    // const courseGrades = useSelector((state) => state.courses.courseGrades);
+
+    const courseGrades = [];
+    students.map(student => {
+        const studentArr = [];
+        studentArr.push(`${student.last_name}, ${student.first_name}`)
+        const studentGrades = {}
+        student.assignments.map(assignment => {
+            studentGrades[assignment.title] = assignment.score;
+        });
+        studentArr.push(studentGrades);
+        courseGrades.push(studentArr);
+    });
+
     console.log(courseGrades)
+
+
+
+
+
+
+
+
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -27,7 +47,26 @@ function CourseGradebook() {
         );
     });
 
-    console.log(courseGrades)
+    // const rows = courseGrades.map(student => {
+    //     const assignments = student[1].map(assignment => {
+    //         return (
+    //                 <td 
+    //                     width="70px"
+    //                     className="scoreTd"
+    //                     onKeyDown={(event) => handleKeyDown(event)}
+    //                     onClick={(event) => enableEditing(event.target)} 
+    //                     key={assignment.id}
+    //                     id={assignment.id}
+    //                 >{assignment.score ? assignment.score : "/"}</td>
+    //         )
+    //     })
+    //     return (
+    //         <tr key={student.id}>
+    //             <td width="150px" >{student[0]}</td>
+    //             {assignments}
+    //         </tr>
+    //     )
+    // })
 
     function enableEditing(element){
         element.contentEditable = true;
@@ -81,7 +120,7 @@ function CourseGradebook() {
     function handleSubmitAdd(event) {
         event.preventDefault();
         const newAssignment = {
-            course_id: selectedCourse.id,
+            course_id: course.id,
             title: title,
             description: description,
             assign_date: assignDate,
@@ -100,7 +139,7 @@ function CourseGradebook() {
     return(
         <div>
             <CourseNavBar />
-           <h1>{selectedCourse.title} Gradebook</h1> 
+           <h1>{course.title} Gradebook</h1> 
             <table>
                 <thead>
                     <tr>
@@ -109,6 +148,7 @@ function CourseGradebook() {
                     </tr>
                </thead>
                <tbody>
+                {/* {rows} */}
                </tbody>
             </table>
             <button onClick={handleClickAddAssignment}>Add assignment</button>
@@ -142,7 +182,7 @@ function CourseGradebook() {
                         value={dueDate}
                     ></input>
                     <input type="submit" value="Save Assignment"></input>
-            </form> 
+            </form>
          </div>
     );
 };
