@@ -1,90 +1,76 @@
 import React, { useState } from 'react';
 import CourseNavBar from './CourseNavBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAssignment } from '../assignments/assignmentsSlice';
-import { addAssignment } from '../students/studentsSlice';
+import { addAssignment, updateAssignment, fetchStudents } from '../students/studentsSlice';
 
 function CourseGradebook() {
 
     const dispatch = useDispatch();
-
-    const course = useSelector((state) => state.courses.selectedCourse)[0];
-    const assignments = useSelector((state) => state.assignments.assignments);
-    const students = useSelector((state) => state.students.students);
-
-    const courseGrades = [];
-    students.map(student => {
-        const studentArr = [];
-        studentArr.push(`${student.last_name}, ${student.first_name}`)
-        student.assignments.map(assignment => {
-            const assignArr = [];
-            assignArr.push(assignment.id)
-            assignArr.push(assignment.score)
-            studentArr.push(assignArr);
-        });
-        courseGrades.push(studentArr);
-    });
-
-    // console.log(courseGrades)
-
-    const assignmentTitles = [];
-    students[0].assignments.map(assignment => {
-        assignmentTitles.push(assignment.title);
-    });
-
-    const rows = courseGrades.map(student => {
-        const scores = student.slice(1).map(assignment => {
-            return (
-                <td key={assignment[0]} id={assignment[0]}>{assignment[1]}</td>
-            )
-        })
-        return(
-            <tr>
-                <td>{student[0]}</td>
-                {scores}
-            </tr>
-        )
-    })
-
-
-
-
-
-
-
-
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [assignDate, setAssignDate] = useState("");
     const [dueDate, setDueDate] = useState("");
 
+    const course = useSelector((state) => state.courses.selectedCourse)[0];
+    const assignments = useSelector((state) => state.assignments.assignments);
+    const students = useSelector((state) => state.students.students);
+
+    // console.log(students)
+
+    const assignmentTitles = [];
+    students[0].assignments.map(assignment => {
+        assignmentTitles.push(assignment.title);
+    });
+
+    const tdStyle = {
+        border: "1px solid black",
+      };
+
     const assignmentHeaders = assignmentTitles.map((title) => {
         return (
-            <th key={title}>{title}</th>
+            <th style={tdStyle} key={title}>{title}</th>
         );
     });
 
-    // const rows = courseGrades.map(student => {
-    //     const assignments = student[1].map(assignment => {
-    //         return (
-    //                 <td 
-    //                     width="70px"
-    //                     className="scoreTd"
-    //                     onKeyDown={(event) => handleKeyDown(event)}
-    //                     onClick={(event) => enableEditing(event.target)} 
-    //                     key={assignment.id}
-    //                     id={assignment.id}
-    //                 >{assignment.score ? assignment.score : "/"}</td>
-    //         )
-    //     })
-    //     return (
-    //         <tr key={student.id}>
-    //             <td width="150px" >{student[0]}</td>
-    //             {assignments}
-    //         </tr>
-    //     )
-    // })
+    const sortedStudents = [...students].sort((s1, s2) => (s1.last_name > s2.last_name) ? 1 : (s1.last_name < s2.last_name) ? -1 : 0);
+    console.log(sortedStudents)
+
+    const courseGrades = [];
+    sortedStudents.map(student => {
+        const studentArr = [];
+        studentArr.push(`${student.last_name}, ${student.first_name}`)
+        student.assignments.map(assignment => {
+            const assignArr = [];
+            assignArr.push(assignment.id)
+            assignArr.push(assignment.score)
+            assignArr.push(student.id)
+            studentArr.push(assignArr);
+        });
+        courseGrades.push(studentArr);
+    });
+
+
+    const rows = courseGrades.map(student => {
+        const scores = student.slice(1).map(assignment => {
+            return (
+                <td 
+                    data-student={assignment[2]}
+                    onKeyDown={(event) => handleKeyDown(event)}
+                    onClick={(event) => enableEditing(event.target)} 
+                    key={assignment[0]} 
+                    id={assignment[0]}
+                    style={tdStyle}
+                >{assignment[1]}</td>
+            );
+        });
+        return(
+            <tr key={student.id}>
+                <td style={tdStyle}>{student[0]}</td>
+                {scores}
+            </tr>
+        );
+    });
 
     function enableEditing(element){
         element.contentEditable = true;
@@ -95,40 +81,21 @@ function CourseGradebook() {
         if (event.key === 'Enter') {
             event.target.contentEditable = false;
             const score = event.target.innerText
-            const assignment = assignments.filter(assignment => assignment.id === parseInt(event.target.id))[0];
+            const student = students.filter(student => student.id === parseInt(event.target.dataset.student))
+            const assignment = student[0].assignments.filter(assignment => assignment.id === parseInt(event.target.id))[0];
             const updatedAssignment = {
-                assign_date: assignment.assign_date,
-                course_id: assignment.course_id,
-                description: assignment.description,
-                due_date: assignment.due_date,
-                id: assignment.id,
+                id: event.target.id,
                 title: assignment.title,
-                student_id: assignment.student_id,
-                score: score
+                description: assignment.description,
+                assign_date: assignment.assign_date,
+                due_date: assignment.due_date,
+                score: score,
+                course_id: assignment.course_id,
+                student_id: assignment.student_id
             }
             dispatch(updateAssignment(updatedAssignment));
           };
       };
-
-    // const studentAssignments = students.map(student => {
-    //     const studentAssignments = student.assignments.map(assignment => {
-    //         return (
-    //             <td 
-    //             className="score"
-    //             onKeyDown={(event) => handleKeyDown(event)}
-    //             onClick={(event) => enableEditing(event.target)} 
-    //             key={assignment.id}
-    //             id={assignment.id}
-    //             >{assignment.score}</td>
-    //         )
-    //     })
-    //     return (
-    //         <tr key={student.id}>
-    //             <td>{student.last_name}, {student.first_name}</td>
-    //             {studentAssignments}
-    //         </tr>
-    //     )
-    // })
 
     function handleClickAddAssignment() {
         const form = document.getElementById('form');
@@ -154,11 +121,16 @@ function CourseGradebook() {
         setDueDate("");
     };
 
+    const tableStyle = {
+        border: "1px solid black",
+        borderCollapse: "collapse",
+      };
+
     return(
         <div>
             <CourseNavBar />
            <h1>{course.title} Gradebook</h1> 
-            <table>
+            <table style={tableStyle}>
                 <thead>
                     <tr>
                         <th>Student</th>

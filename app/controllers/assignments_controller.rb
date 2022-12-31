@@ -25,9 +25,10 @@ class AssignmentsController < ApplicationController
     end
 
     def update 
+        student = Student.find(params[:student_id])
         assignment = Assignment.find(params[:id])
         assignment.update!(assignment_params)
-        render json: assignment, status: :ok
+        render json: student, status: :ok
     end
 
     def destroy

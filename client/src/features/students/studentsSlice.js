@@ -31,6 +31,18 @@ export const addAssignment = createAsyncThunk("assignments/addAssignment", (newA
     .then(assignment => assignment);
 });
 
+export const updateAssignment = createAsyncThunk("assignments/updateAssignment", (updatedAssignment) => {
+    return fetch(`/assignments/${updatedAssignment.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedAssignment)
+    })
+    .then(res => res.json())
+    .then(assignment => assignment);
+});
+
 export const updateStudent = createAsyncThunk("students/updateStudent", (updatedStudentInfo) => {
     return fetch(`/students/${updatedStudentInfo.id}`, {
         method: "PATCH",
@@ -55,6 +67,7 @@ const studentsSlice = createSlice({
     name: 'students',
     initialState: {
         students: [],
+        updatingStudent: [],
         selectedStudent: [{id: 0, first_name: 'first', last_name: 'last', grade_level: 9, classification: 'student', birth_date: '1970-01-01'}],
         status: 'idle',
         error: null
@@ -82,7 +95,7 @@ const studentsSlice = createSlice({
             state.students.push(action.payload);
             state.status = "idle";
         },
-        [addStudent.rejected](state, action) {
+        [addStudent.rejected](action) {
             console.log(action.payload)
         },
         [updateStudent.pending](state) {
@@ -113,6 +126,13 @@ const studentsSlice = createSlice({
             }
             state.status = "idle";
         },
+        [updateAssignment.pending](state) {
+            state.status = "loading";
+        },
+        [updateAssignment.fulfilled](state, action) {
+            state.students = state.students.filter(student => student.id !== action.payload.id);
+            state.students.push(action.payload)
+        }
     },
 });
 

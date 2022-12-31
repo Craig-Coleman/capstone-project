@@ -32,7 +32,7 @@ class StudentsController < ApplicationController
     def update 
         student = Student.find(params[:id])
         student.update!(student_params)
-        render json: student, status: :ok 
+        render json: student, include: :student, status: :ok 
     end
 
     def destroy 
