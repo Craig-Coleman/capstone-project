@@ -16,20 +16,35 @@ function CourseGradebook() {
     students.map(student => {
         const studentArr = [];
         studentArr.push(`${student.last_name}, ${student.first_name}`)
-        const studentGrades = {}
         student.assignments.map(assignment => {
-            studentGrades[assignment.title] = assignment.score;
+            const assignArr = [];
+            assignArr.push(assignment.id)
+            assignArr.push(assignment.score)
+            studentArr.push(assignArr);
         });
-        studentArr.push(studentGrades);
         courseGrades.push(studentArr);
     });
+
+    // console.log(courseGrades)
 
     const assignmentTitles = [];
     students[0].assignments.map(assignment => {
         assignmentTitles.push(assignment.title);
     });
 
-    console.log(assignmentTitles)
+    const rows = courseGrades.map(student => {
+        const scores = student.slice(1).map(assignment => {
+            return (
+                <td key={assignment[0]} id={assignment[0]}>{assignment[1]}</td>
+            )
+        })
+        return(
+            <tr>
+                <td>{student[0]}</td>
+                {scores}
+            </tr>
+        )
+    })
 
 
 
@@ -151,7 +166,7 @@ function CourseGradebook() {
                     </tr>
                </thead>
                <tbody>
-                {/* {rows} */}
+                {rows}
                </tbody>
             </table>
             <button onClick={handleClickAddAssignment}>Add assignment</button>

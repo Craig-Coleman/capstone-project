@@ -62,16 +62,7 @@ const studentsSlice = createSlice({
     reducers: {
         studentSelected(state, action) {
             state.selectedStudent = state.students.filter(student => student.id === action.payload);
-        },
-        // updateStudentAssignment(state, action) {
-        //     state.student = state.students.find(student => student.id === action.payload.student)
-        //     state.assignment = state.student.assignments.find(assignment => assignment.id === action.payload.assignment);
-        //     state.assignment.score = action.payload.score;
-        //     state.student.assignments = state.student.assignments.filter(assignment => assignment.id !== action.payload.assignment);
-        //     state.student.assignments.push(state.assignment);
-        //     state.students = state.students.filter(student => student.id !== action.payload.student);
-        //     state.students.push(state.student);
-        // }
+        }
     },
     extraReducers: {
         [fetchStudents.pending](state) {
