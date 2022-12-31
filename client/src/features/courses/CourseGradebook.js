@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import CourseNavBar from './CourseNavBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAssignment, updateAssignment } from '../assignments/assignmentsSlice';
-import { fetchCourseGrades } from './coursesSlice';
+import { updateAssignment } from '../assignments/assignmentsSlice';
+import { addAssignment } from '../students/studentsSlice';
 
 function CourseGradebook() {
 
@@ -11,8 +11,6 @@ function CourseGradebook() {
     const course = useSelector((state) => state.courses.selectedCourse)[0];
     const assignments = useSelector((state) => state.assignments.assignments);
     const students = useSelector((state) => state.students.students);
-    const assignmentTitles = useSelector((state) => state.assignments.assignmentTitles);
-    // const courseGrades = useSelector((state) => state.courses.courseGrades);
 
     const courseGrades = [];
     students.map(student => {
@@ -26,7 +24,12 @@ function CourseGradebook() {
         courseGrades.push(studentArr);
     });
 
-    console.log(courseGrades)
+    const assignmentTitles = [];
+    students[0].assignments.map(assignment => {
+        assignmentTitles.push(assignment.title);
+    });
+
+    console.log(assignmentTitles)
 
 
 

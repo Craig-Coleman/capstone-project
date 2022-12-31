@@ -32,24 +32,6 @@ class CoursesController < ApplicationController
         render json: course
     end
 
-    def course_grades
-            course = Course.find(params[:id])
-            course_grades = []
-            course.students.map { |student|
-                course_assignments = student.assignments.select{ |assignment| assignment.course_id == course.id}
-                course_assignments.sort_by { |assignment| assignment[:due_date] }.reverse
-                student_row = []
-                student_row.push(student.last_name + " , " + student.first_name)
-                assignments = []
-                course_assignments.map do |assignment|
-                    assignments.push(assignment)
-                end
-                student_row.push(assignments)
-                course_grades.push(student_row)
-            }
-            render json: course_grades, status: :ok
-    end
-
     private 
 
     def course_params 

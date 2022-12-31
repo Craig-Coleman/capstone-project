@@ -19,6 +19,18 @@ export const addStudent = createAsyncThunk("students/addStudent", (newStudentInf
     .then(student => student);
 });
 
+export const addAssignment = createAsyncThunk("assignments/addAssignment", (newAssignment) => {
+    return fetch(`/courses/${newAssignment.course_id}/assignments`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newAssignment)
+    })
+    .then(res => res.json())
+    .then(assignment => assignment);
+});
+
 export const updateStudent = createAsyncThunk("students/updateStudent", (updatedStudentInfo) => {
     return fetch(`/students/${updatedStudentInfo.id}`, {
         method: "PATCH",
@@ -51,15 +63,15 @@ const studentsSlice = createSlice({
         studentSelected(state, action) {
             state.selectedStudent = state.students.filter(student => student.id === action.payload);
         },
-        updateStudentAssignment(state, action) {
-            state.student = state.students.find(student => student.id === action.payload.student)
-            state.assignment = state.student.assignments.find(assignment => assignment.id === action.payload.assignment);
-            state.assignment.score = action.payload.score;
-            state.student.assignments = state.student.assignments.filter(assignment => assignment.id !== action.payload.assignment);
-            state.student.assignments.push(state.assignment);
-            state.students = state.students.filter(student => student.id !== action.payload.student);
-            state.students.push(state.student);
-        }
+        // updateStudentAssignment(state, action) {
+        //     state.student = state.students.find(student => student.id === action.payload.student)
+        //     state.assignment = state.student.assignments.find(assignment => assignment.id === action.payload.assignment);
+        //     state.assignment.score = action.payload.score;
+        //     state.student.assignments = state.student.assignments.filter(assignment => assignment.id !== action.payload.assignment);
+        //     state.student.assignments.push(state.assignment);
+        //     state.students = state.students.filter(student => student.id !== action.payload.student);
+        //     state.students.push(state.student);
+        // }
     },
     extraReducers: {
         [fetchStudents.pending](state) {
@@ -95,6 +107,19 @@ const studentsSlice = createSlice({
         },
         [deleteStudent.fulfilled](state, action) {
             state.students = state.students.filter(student => student.id !== action.payload.id);
+            state.status = "idle";
+        },
+        [addAssignment.pending](state) {
+            state.status = "loading";
+        },
+        [addAssignment.fulfilled](state, action) {
+            if (Object.keys(action.payload).includes('errors')){
+                state.error = action.payload;
+            } else {
+                state.students.map(student => {
+                    student.assignments.push(action.payload)
+                })
+            }
             state.status = "idle";
         },
     },

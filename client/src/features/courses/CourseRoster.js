@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import CourseNavBar from './CourseNavBar';
 import StudentCard from '../students/StudentCard';
 import { addStudent } from '../students/studentsSlice';
-import { fetchCourseGrades } from './coursesSlice';
 
 function CourseRoster() {
 

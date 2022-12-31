@@ -6,18 +6,6 @@ export const fetchAssignments = createAsyncThunk("assignments/fetchAssignments",
     .then(assignments => assignments);
 });
 
-export const addAssignment = createAsyncThunk("assignments/addAssignment", (newAssignment) => {
-    return fetch(`/courses/${newAssignment.course_id}/assignments`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newAssignment)
-    })
-    .then(res => res.json())
-    .then(assignment => assignment);
-});
-
 export const updateAssignment = createAsyncThunk("assignments/updateAssignment", (assignment) => {
     return fetch(`/assignments/${assignment.id}`, {
         method: "PATCH",
@@ -52,18 +40,6 @@ const assignmentsSlice = createSlice({
             } else {
                 state.assignments = action.payload;
                 state.assignmentTitles = [...new Set(state.assignments.map(assignment => assignment.title))]
-            }
-            state.status = "idle";
-        },
-        [addAssignment.pending](state) {
-            state.status = "loading";
-        },
-        [addAssignment.fulfilled](state, action) {
-            if (Object.keys(action.payload).includes('errors')){
-                state.error = action.payload;
-            } else {
-                state.assignments.push(action.payload);
-                state.assignmentTitles.push(action.payload.title)
             }
             state.status = "idle";
         },

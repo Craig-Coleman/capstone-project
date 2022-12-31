@@ -11,7 +11,6 @@ Rails.application.routes.draw do
 
   get '/courses/:course_id/students', to: "students#roster_index"
   get '/courses/:course_id/assignments', to: "assignments#course_assignments_index"
-  get '/courses/:id/grades', to: "courses#course_grades"
   post '/courses/:course_id/students', to: "students#create"
   post '/courses/:course_id/assignments', to: "assignments#create" 
   
